@@ -47,6 +47,10 @@ def readData(filepath):
             requests.append(Request(idVideo, idEndp, numR,r))
            
 
-        return [numVideos, numEndp, numRequests, numCache, sizeCache, videoSizes, endpoints, caches, videos, requests]
+
+        startSol=Solution(videos,caches,endpoints,requests)
+        
+        return startSol
+       # return [numVideos, numEndp, numRequests, numCache, sizeCache, videoSizes, endpoints, caches, videos, requests]
 
 readData('src/input/me_at_the_zoo.in')

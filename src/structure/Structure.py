@@ -84,3 +84,11 @@ class Solution:
         for r in self.requests:
            time+= getSavedTime(r)
         return time
+
+    
+
+
+    def generateRandomSol(self):
+        numVids=len(self.videos)
+        numCaches=len(self.caches)
+        
