@@ -7,15 +7,14 @@ Created on Sat Mar 13 12:11:57 2021
 """
 
 import random
-
+import math
 
 class Video:
     def __init__(self, size, id):
         self.size = size
         self.id=id
 
-    def getStreamingTime(self, latency):
-        return self.size/latency
+    
 
 
 
@@ -107,22 +106,23 @@ class Solution:
         return False
 
     def getSavedTime(self, request):
-        dataCenterTime=self.endpoints[request.endpoint].latency
-        
-        time=self.videos[request.video].getStreamingTime(dataCenterTime)
+        dataCenterTime=request.endpoint.latency
+       
+        time=dataCenterTime
         
         for cache in self.caches:
-            if cache.checkVideo(request.video) and request.endpoint.checkCache(cache) and time > request.video.getStreamingTime(request.endpoint.dic[cache]):
-                time = request.video.getStreamingTime(request.endpoint.dic[cache])      # searches for lower streaming time for each request
+            if cache.checkVideo(request.video) and request.endpoint.checkCache(cache):
+                if time> request.endpoint.dic[cache] : 
+                    time = request.endpoint.dic[cache]     # searches for lower streaming time for each request
             else:
                 continue
-        return (self.videos[request.video].getStreamingTime(dataCenterTime)-time)*request.ammount    # multiplies saved time by the ammount of times a video is requested
+        return (dataCenterTime-time)*request.ammount    # multiplies saved time by the ammount of times a video is requested
 
 
     def evaluation(self):
         time=0
         for r in self.requests:
-           time+= self.getSavedTime(r)
+            time+= self.getSavedTime(r)
         print(time)
         return time
 
