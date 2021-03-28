@@ -8,6 +8,7 @@ Created on Sat Mar 13 12:11:57 2021
 
 import random
 import math
+from copy import *
 
 class Video:
     def __init__(self, size, id):
@@ -27,7 +28,7 @@ class CacheServer:
     
     def addVideo(self, video):
         temp = self.currentCapacity + video.size
-        if temp <= self.maxCapacity:
+        if temp <= self.maxCapacity and video not in self.videos:
             self.videos.append(video)
             self.currentCapacity = temp
             return True
@@ -41,6 +42,8 @@ class CacheServer:
                     return True
         return False
 
+
+    
     def checkVideo(self,video):
         return video in self.videos
     
@@ -123,20 +126,32 @@ class Solution:
         time=0
         for r in self.requests:
             time+= self.getSavedTime(r)
-        print(time)
+        #print('inside eval', time)
         return time
 
 
     #generates a random solution with caches full of random videos
     def generateRandomSol(self):
-        for c in self.caches:
+        sol=deepcopy(self)
+        for c in sol.caches:
             nFails=0
             while(nFails<15 and c.currentCapacity<=c.maxCapacity):
-                if c.addVideo(self.getRandomVideo())==False: nFails+=1
+                if c.addVideo(sol.getRandomVideo())==False: nFails+=1
             
-        return self
+        return sol
+
+
+    def mutate(self):
+        randC1=random.randrange(len(self.caches))
+        randC2=random.randrange(len(self.caches))
+        c1=deepcopy(self.caches[randC1])
+        c2=deepcopy(self.caches[randC2])
+        self.caches[randC1].videos=deepcopy(c2.videos)
+        self.caches[randC2].videos=deepcopy(c1.videos)
+
 
     def printVideosinCaches(self):
+        #print(self)
         for c in self.caches:
             a="Cache "+str(c.id)+": "
             for v in c.videos:
