@@ -34,7 +34,7 @@ def readData(filepath):
             for num in range(numCaches):
                
                 c, latency = [int(i) for i in file.readline().split(" ")]
-                endp.addCacheServer(caches[c],latency)
+                endp.addCacheServer(c,latency)
                 
             
 
@@ -49,9 +49,9 @@ def readData(filepath):
            
 
 
-        startSol=Solution(videos,caches,endpoints,requests)
-        
-        return startSol
+        data=Data(videos,numCache,sizeCache, endpoints,requests)
+        print("done parse")
+        return data
        # return [numVideos, numEndp, numRequests, numCache, sizeCache, videoSizes, endpoints, caches, videos, requests]
 
 #readData('src/input/me_at_the_zoo.in')
