@@ -55,7 +55,7 @@ def steadyStateGenetic(popSize, numGens, survivorRate, mutationRate):
 
 
 def generationalGenetic(popSize, numGens, mutationRate):
-    data=readData('../src/input/videos_worth_spreading.in')
+    data=readData('../src/input/me_at_the_zoo.in')
     percetageMutation = int(popSize*mutationRate)
     population=generatePop(popSize,data)
     currentGeneration = 0
@@ -156,9 +156,7 @@ def generatePop(popSize,data):
     population=[]
     for i in range(popSize):
         individual=data.generateRandomSol()
-        
         #individual.printVideosinCaches()
-       
         population.append([data.evaluation(individual),individual])
     return population
 

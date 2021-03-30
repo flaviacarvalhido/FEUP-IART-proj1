@@ -97,6 +97,26 @@ class Solution:
                 a+=str(v.id)+", "
             print(a)
 
+    #returns random video in a random cache
+    #if cache has 0 videos, returns 0 for video
+    def getRandomVideoFromCache(self):
+        randCacheid=random.randrange(len(self.caches))
+        randCache = self.caches[randCacheid]
+        nVideos = len(randCache.videos)
+        if nVideos == 0:
+            return nVideos, randCache.id
+        randVideo = randCache.videos[random.randrange(nVideos)]
+        return randVideo, randCacheid
+    
+    def subCache(self, newCache):
+        for i in range(len(self.caches)):
+            if self.caches[i].id == newCache.id:
+                self.caches.pop(i)
+                self.caches.append(newCache)
+                return True
+        return False
+    
+
 class Data:
 
     def __init__(self, videos, numCaches,sizeCaches, endpoints, requests):
@@ -108,27 +128,12 @@ class Data:
 
     
 
-    #returns random video in a random cache
-    #if cache has 0 videos, returns 0 for video
-    def getRandomVideoFromCache(self):
-        nCaches = len(self.caches)
-        randCache = self.caches[random.randrange(nCaches)]
-        nVideos = len(randCache.videos)
-        if nVideos == 0:
-            return nVideos, randCache
-        randVideo = randCache.videos[random.randrange(nVideos)]
-        return randVideo, randCache
+    
 
     def getRandomVideo(self):
         return self.videos[random.randrange(len(self.videos))]
 
-    def subCache(self, newCache):
-        for i in range(len(self.caches)):
-            if self.caches[i].id == newCache.id:
-                self.caches.pop(i)
-                self.caches.append(newCache)
-                return True
-        return False
+    
 
     def getSavedTime(self, request,sol):
         dataCenterTime=request.endpoint.latency
@@ -184,16 +189,18 @@ class Data:
 
 
   
-def subVideo(sol):
-    (randVideo, randCache) = sol.getRandomVideoFromCache()
+def subVideo(data,sol):
+    (randVideo, randCacheid) = sol.getRandomVideoFromCache()
+    randCache=sol.caches[randCacheid]
     if randVideo == 0:
         while True:
-            randVideo = sol.getRandomVideo()
-            if randCache.addVideo(randVideo):
+            randVideo = data.getRandomVideo()
+            if sol.caches[randCacheid].addVideo(randVideo):
                 break
     else:
         while True:
-            otherRandVideo = sol.getRandomVideo()
+            otherRandVideo = data.getRandomVideo()
+            
             if not randCache.checkVideo(otherRandVideo) and randCache.canSwapVideos(randVideo, otherRandVideo):
                 randCache.takeVideo(randVideo)
                 randCache.addVideo(otherRandVideo)
@@ -202,11 +209,15 @@ def subVideo(sol):
     newSol.subCache(randCache)
     return newSol
 
-def swapVideos(sol):
+def swapVideos(data,sol):
     while True:
-        (randVideo1, randCache1) = sol.getRandomVideoFromCache()
-        (randVideo2, randCache2) = sol.getRandomVideoFromCache()
-        if randVideo1.id != randVideo2.id and randCache1.id != randCache2.id and randCache1.canSwapVideos(randVideo1, randVideo2) and randCache2.canSwapVIdeos(randVideo2, randVideo1):
+        (randVideo1, randCacheid1) = sol.getRandomVideoFromCache()
+        (randVideo2, randCacheid2) = sol.getRandomVideoFromCache()
+        if(randVideo1==0 or randVideo2==0): continue
+        randCache1=sol.caches[randCacheid1]
+        randCache2=sol.caches[randCacheid2]
+        
+        if randVideo1.id != randVideo2.id and randCache1.id != randCache2.id and randCache1.canSwapVideos(randVideo1, randVideo2) and randCache2.canSwapVideos(randVideo2, randVideo1):
             randCache1.takeVideo(randVideo1)
             randCache2.takeVideo(randVideo2)
             randCache1.addVideo(randVideo2)
@@ -217,10 +228,10 @@ def swapVideos(sol):
     newSol.subCache(randCache2)
     return newSol
 
-def neighbourFunc(sol):
+def neighbourFunc(data,sol):
     if random.randrange(2):
-        return swapVideos(sol)
-    else: return subVideo(sol)
+        return swapVideos(data,sol)
+    else: return subVideo(data,sol)
 
 
 
