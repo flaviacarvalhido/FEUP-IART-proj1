@@ -36,7 +36,8 @@ def readData(filepath):
                 c, latency = [int(i) for i in file.readline().split(" ")]
                 endp.addCacheServer(caches[c],latency)
                 
-                
+            
+
             endpoints.append(endp);
 
         
@@ -44,9 +45,13 @@ def readData(filepath):
         requests = []
         for r in range(numRequests):
             idVideo, idEndp, numR = [int(i) for i in file.readline().split(" ")]
-            requests.append(Request(idVideo, idEndp, numR,r))
+            requests.append(Request(videos[idVideo], endpoints[idEndp], numR,r))
            
 
-        return [numVideos, numEndp, numRequests, numCache, sizeCache, videoSizes, endpoints, caches, videos, requests]
 
-readData('src/input/me_at_the_zoo.in')
+        startSol=Solution(videos,caches,endpoints,requests)
+        
+        return startSol
+       # return [numVideos, numEndp, numRequests, numCache, sizeCache, videoSizes, endpoints, caches, videos, requests]
+
+#readData('src/input/me_at_the_zoo.in')

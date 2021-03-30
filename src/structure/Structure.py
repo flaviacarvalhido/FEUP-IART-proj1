@@ -7,15 +7,15 @@ Created on Sat Mar 13 12:11:57 2021
 """
 
 import random
-
+import math
+from copy import *
 
 class Video:
     def __init__(self, size, id):
         self.size = size
         self.id=id
 
-    def getStreamingTime(self, latency):
-        return self.time/latency
+    
 
 
 
@@ -28,7 +28,7 @@ class CacheServer:
     
     def addVideo(self, video):
         temp = self.currentCapacity + video.size
-        if temp <= self.maxCapacity:
+        if temp <= self.maxCapacity and video not in self.videos:
             self.videos.append(video)
             self.currentCapacity = temp
             return True
@@ -42,11 +42,15 @@ class CacheServer:
                     return True
         return False
 
+
+    
     def checkVideo(self,video):
         return video in self.videos
     
     def canSwapVideos(self, oldVideo, newVideo):
         return self.currentCapacity + newVideo.size - oldVideo.size <= self.maxCapacity
+
+   
 
 
 class Endpoint:
@@ -80,6 +84,8 @@ class Solution:
         self.endpoints=endpoints
         self.requests=requests
 
+    
+
     #returns random video in a random cache
     #if cache has 0 videos, returns 0 for video
     def getRandomVideoFromCache(self):
@@ -104,22 +110,58 @@ class Solution:
 
     def getSavedTime(self, request):
         dataCenterTime=request.endpoint.latency
-        time=request.video.getStreamingTime(dataCenterTime)
+       
+        time=dataCenterTime
+        
         for cache in self.caches:
-            if cache.checkVideo(request.video) and request.endpoint.checkCache(cache) and time > request.video.getStreamingTime(request.endpoint.dic[cache]):
-                time = request.video.getStreamingTime(request.endpoint.dic[cache])      # searches for lower streaming time for each request
+            if cache.checkVideo(request.video) and request.endpoint.checkCache(cache):
+                if time> request.endpoint.dic[cache] : 
+                    time = request.endpoint.dic[cache]     # searches for lower streaming time for each request
             else:
                 continue
-        return (request.video.getStreamingTime(dataCenterTime)-time)*request.ammount    # multiplies saved time by the ammount of times a video is requested
+        return (dataCenterTime-time)*request.ammount    # multiplies saved time by the ammount of times a video is requested
 
 
     def evaluation(self):
         time=0
         for r in self.requests:
-           time+= self.getSavedTime(r)
+            time+= self.getSavedTime(r)
+        #print('inside eval', time)
         return time
 
 
+    #generates a random solution with caches full of random videos
+    def generateRandomSol(self):
+        sol=deepcopy(self)
+        for c in sol.caches:
+            nFails=0
+            while(nFails<15 and c.currentCapacity<=c.maxCapacity):
+                if c.addVideo(sol.getRandomVideo())==False: nFails+=1
+            
+        return sol
+
+
+    def mutate(self):
+        randC1=random.randrange(len(self.caches))
+        randC2=random.randrange(len(self.caches))
+        c1=deepcopy(self.caches[randC1])
+        c2=deepcopy(self.caches[randC2])
+        self.caches[randC1].videos=deepcopy(c2.videos)
+        self.caches[randC2].videos=deepcopy(c1.videos)
+
+
+    def printVideosinCaches(self):
+        #print(self)
+        for c in self.caches:
+            a="Cache "+str(c.id)+": "
+            for v in c.videos:
+                a+=str(v.id)+", "
+            print(a)
+
+
+
+
+  
 def subVideo(sol):
     (randVideo, randCache) = sol.getRandomVideoFromCache()
     if randVideo == 0:
@@ -157,3 +199,7 @@ def neighbourFunc(sol):
     if random.randrange(2):
         return swapVideos(sol)
     else: return subVideo(sol)
+
+
+
+
