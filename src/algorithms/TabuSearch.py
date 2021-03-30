@@ -25,17 +25,23 @@ import parser.py
 
 
 def tabuSearch(sol):
-    bestSolution = sol              #sol is a randomly generated initial Solution
+    bestSolution = sol                                      # TODO: sol is a randomly generated initial Solution
     bestCandidate = sol
     tabuList = []
     tabuList.append(sol)
 
-    while():  #stopping condition
-        neighborhood = bestCandidate.getNeighbors()         #TODO: ADD getNeighbors to Solution
+    while():                                                # TODO: stopping condition
+        neighborhood = bestCandidate.getNeighbors()         # TODO: get all the neighbors available. implement getNeighbors in class Solution
         bestCandidate = neighborhood[0]
         for candidate in neighborhood:
-            if not tabuList.contains()        
+            if not tabuList.contains(candidate) and candidate.evaluation() > bestCandidate.evaluation():
+                bestCandidate = candidate
 
+        if(bestCandidate.evaluation() > bestSolution.evaluation()):
+            bestSolution = bestCandidate
 
-
+        tabuList.append(bestCandidate)
+        if(len(tabuList) > maxTabuSize):                    # TODO: tabu tenure dynamic
+            tabuList.pop(0)
+        
     return bestSolution
