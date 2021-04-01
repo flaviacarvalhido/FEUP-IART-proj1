@@ -23,13 +23,13 @@ class CacheServer:
     def __init__(self, maxCapacity,id):
         self.id=id
         self.maxCapacity = maxCapacity
-        self.videos = []
+        self.videos = set()
         self.currentCapacity = 0
     
     def addVideo(self, video):
         temp = self.currentCapacity + video.size
         if temp <= self.maxCapacity and video not in self.videos:
-            self.videos.append(video)
+            self.videos.add(video)
             self.currentCapacity = temp
             return True
         return False
@@ -38,7 +38,7 @@ class CacheServer:
         if self.checkVideo(video):
             for i in range(len(self.videos)):
                 if self.videos[i].id == video.id:
-                    self.videos.pop(i)
+                    self.videos.remove(i)
                     return True
         return False
 
@@ -185,14 +185,14 @@ class Data:
 
 
     def evaluation(self,sol):
-        print('begin eval')
+        # print('begin eval')
         t0=time.perf_counter()
         t=sum([self.getSavedTime(r,sol) for r in self.requests])
         # t=0
         # for r in self.requests:
         #     t+= self.getSavedTime(r,sol)
         # #print('inside eval', time)
-        print('end eval')
+        # print('end eval')
         t1=time.perf_counter()
         print(t1-t0)
         return t
@@ -210,7 +210,7 @@ class Data:
 
     def neighbourhood(self,sol):
         numNeighbours=self.neighbourhoodSize()
-        neighbourhood={}
+        neighbourhood=set()
         for i in range(numNeighbours):
             neighbourhood.add(neighbourFunc(self,sol))
         

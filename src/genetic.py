@@ -4,7 +4,7 @@ from copy import *
 import random
 
 def steadyStateGenetic(popSize, numGens, survivorRate, mutationRate):
-    data=readData('../src/input/small.in')
+    data=readData('../src/input/videos_worth_spreading.in')
     survivorsSize = int(popSize*survivorRate)
     percetageMutation = int(popSize*mutationRate)
     population=generatePop(popSize,data)
@@ -55,7 +55,7 @@ def steadyStateGenetic(popSize, numGens, survivorRate, mutationRate):
 
 
 def generationalGenetic(popSize, numGens, mutationRate):
-    data=readData('../src/input/trending_today.in')
+    data=readData('../src/input/videos_worth_spreading.in')
     percetageMutation = int(popSize*mutationRate)
     population=generatePop(popSize,data)
     currentGeneration = 0
@@ -153,13 +153,15 @@ def classicalCrossover(population,data):
      
 
 def generatePop(popSize,data):
-
+    t0=time.perf_counter()
     population=[]
     for i in range(popSize):
         individual=data.generateRandomSol()
         #individual.printVideosinCaches()
         population.append([data.evaluation(individual),individual])
     print('pop generated')
+    t1=time.perf_counter()
+    print(t1-t0)
     return population
 
 
@@ -208,7 +210,7 @@ def testCross():
     
 
 # testCross()
-generationalGenetic(10,20,0.1)
+generationalGenetic(50,30,0.3)
 # testMut()
 # testEval()
 # steadyStateGenetic(70,40,0.5,0.8)
