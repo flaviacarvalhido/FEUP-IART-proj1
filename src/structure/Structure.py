@@ -10,6 +10,8 @@ import random
 import math
 from copy import *
 
+import time
+
 class Video:
     def __init__(self, size, id):
         self.size = size
@@ -21,13 +23,13 @@ class CacheServer:
     def __init__(self, maxCapacity,id):
         self.id=id
         self.maxCapacity = maxCapacity
-        self.videos = []
+        self.videos = set()
         self.currentCapacity = 0
     
     def addVideo(self, video):
         temp = self.currentCapacity + video.size
         if temp <= self.maxCapacity and video not in self.videos:
-            self.videos.append(video)
+            self.videos.add(video)
             self.currentCapacity = temp
             return True
         return False
@@ -36,7 +38,7 @@ class CacheServer:
         if self.checkVideo(video):
             for i in range(len(self.videos)):
                 if self.videos[i].id == video.id:
-                    self.videos.pop(i)
+                    self.videos.remove(i)
                     return True
         return False
 
@@ -80,7 +82,9 @@ class Solution:
         for i in range(numCaches):
             self.caches.append(CacheServer(size,i))
 
-    
+    def __eq__(self, x):
+        return self.convertToMatrix==x.convertToMatrix
+
     def mutate(self):
         randC1=random.randrange(len(self.caches))
         randC2=random.randrange(len(self.caches))
@@ -117,6 +121,15 @@ class Solution:
         return False
     
 
+    def convertToMatrix(self):
+        matrix=[]
+        for c in self.caches:
+            cacheLine=[]
+            for v in c.videos:
+                cacheLine.append(v.id)
+            matrix.append(cacheLine)
+        return matrix
+
 class Data:
 
     def __init__(self, videos, numCaches,sizeCaches, endpoints, requests):
@@ -127,8 +140,18 @@ class Data:
         self.requests=requests
 
     
-
-    
+    #creates matrix of 0's and 1's : row index:caches & col index:videos
+    def convertToMatrix(self,sol):
+        matrix=[]
+        for c in sol.caches:
+            cacheLine=[]
+            for v in self.videos:
+                if c.checkVideo(v):
+                    cacheLine.append(1)
+                else :
+                     cacheLine.append(0)
+            matrix.append(cacheLine)
+        return matrix
 
     def getRandomVideo(self):
         return self.videos[random.randrange(len(self.videos))]
@@ -140,22 +163,58 @@ class Data:
        
         time=dataCenterTime
         
-        for cache in sol.caches:
-            if cache.checkVideo(request.video) and request.endpoint.checkCache(cache.id):
-                if time> request.endpoint.dic[cache.id] : 
-                    time = request.endpoint.dic[cache.id]     # searches for lower streaming time for each request
+        # for cache in sol.caches:
+        #     if cache.checkVideo(request.video) and request.endpoint.checkCache(cache.id):
+        #         tenp=request.endpoint.dic[cache.id]
+        #         if time> tenp : 
+        #             time = tenp     # searches for lower streaming time for each request
+        #     else:
+        #         continue
+
+
+        for cacheId in request.endpoint.dic.keys():
+            cache=sol.caches[cacheId]
+            if cache.checkVideo(request.video):
+                tenp=request.endpoint.dic[cache.id]
+                if time> tenp : 
+                    time = tenp     # searches for lower streaming time for each request
             else:
                 continue
+
         return (dataCenterTime-time)*request.ammount    # multiplies saved time by the ammount of times a video is requested
 
 
     def evaluation(self,sol):
-        time=0
-        for r in self.requests:
-            time+= self.getSavedTime(r,sol)
-        #print('inside eval', time)
-        return time
+        # print('begin eval')
+        t0=time.perf_counter()
+        t=sum([self.getSavedTime(r,sol) for r in self.requests])
+        # t=0
+        # for r in self.requests:
+        #     t+= self.getSavedTime(r,sol)
+        # #print('inside eval', time)
+        # print('end eval')
+        t1=time.perf_counter()
+        print(t1-t0)
+        return t
+    
 
+    def neighbourhoodsize(self):
+        if self.numCaches>100:
+            return int(self.numCaches*0.4)
+        elif self.numCaches>50:
+            return int(self.numCaches*0.6)
+        else:
+            return int(self.numCaches*1.5)
+
+
+
+    def neighbourhood(self,sol):
+        numNeighbours=self.neighbourhoodSize()
+        neighbourhood=set()
+        for i in range(numNeighbours):
+            neighbourhood.add(neighbourFunc(self,sol))
+        
+        return list(neighbourhood)
 
     #generates a random solution with caches full of random videos
     def generateRandomSol(self):
