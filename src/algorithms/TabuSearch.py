@@ -25,7 +25,7 @@ import parser.py
 
 
 def tabuSearch(sol):
-    bestSolution = sol                                      # TODO: sol is a randomly generated initial Solution
+    bestSolution = sol                                     # TODO: sol is a randomly generated initial Solution
     bestCandidate = sol
     tabuList = []
     tabuList.append(sol)
