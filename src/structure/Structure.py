@@ -186,21 +186,23 @@ class Data:
             print(a)
 
 
-
-
-  
 def subVideo(data,sol):
-    (randVideo, randCacheid) = sol.getRandomVideoFromCache()
-    randCache=sol.caches[randCacheid]
-    if randVideo == 0:
-        while True:
+    count = 0
+    while True:
+        (randVideo, randCacheid) = sol.getRandomVideoFromCache()
+        count += 1
+        if count>=30:
+            newSol = data.generateRandomSol()
+            return newSol
+        randCache=sol.caches[randCacheid]
+        if randVideo == 0:
+            if sol.caches[randCacheid].currentCapacity == sol.caches[randCacheid].maxCapacity:
+                continue
             randVideo = data.getRandomVideo()
             if sol.caches[randCacheid].addVideo(randVideo):
                 break
-    else:
-        while True:
+        else:
             otherRandVideo = data.getRandomVideo()
-            
             if not randCache.checkVideo(otherRandVideo) and randCache.canSwapVideos(randVideo, otherRandVideo):
                 randCache.takeVideo(randVideo)
                 randCache.addVideo(otherRandVideo)
@@ -210,9 +212,14 @@ def subVideo(data,sol):
     return newSol
 
 def swapVideos(data,sol):
+    count = 0
     while True:
         (randVideo1, randCacheid1) = sol.getRandomVideoFromCache()
         (randVideo2, randCacheid2) = sol.getRandomVideoFromCache()
+        count += 1
+        if count == 30:
+            newSol = data.generateRandomSol()
+            return newSol
         if(randVideo1==0 or randVideo2==0): continue
         randCache1=sol.caches[randCacheid1]
         randCache2=sol.caches[randCacheid2]
@@ -223,13 +230,14 @@ def swapVideos(data,sol):
             randCache1.addVideo(randVideo2)
             randCache2.addVideo(randVideo1)
             break
+
     newSol = sol
     newSol.subCache(randCache1)
     newSol.subCache(randCache2)
     return newSol
 
 def neighbourFunc(data,sol):
-    if random.randrange(2):
+    if random.randrange(2) == 0:
         return swapVideos(data,sol)
     else: return subVideo(data,sol)
 
