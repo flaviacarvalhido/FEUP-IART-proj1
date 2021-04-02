@@ -142,8 +142,10 @@ class Solution:
             cacheLine=[]
             for v in c.videos:
                 cacheLine.append(v.id)
-            matrix.append(cacheLine)
+            matrix.append(sorted(cacheLine))
         return matrix
+
+
 
 class Data:
 
@@ -217,9 +219,9 @@ class Data:
         if self.numCaches>100:
             return int(self.numCaches*0.4)
         elif self.numCaches>50:
-            return int(self.numCaches*0.6)
+            return int(self.numCaches)
         else:
-            return int(self.numCaches*3)
+            return int(self.numCaches*4)
 
 
 

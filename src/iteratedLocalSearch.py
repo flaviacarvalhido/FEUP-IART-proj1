@@ -61,7 +61,7 @@ def localSearch(data,currentSol):
 
 def testPerturbation():
 
-    data=readData('../src/input/videos_worth_spreading.in')
+    data=readData('../src/input/vws_small.in')
     inicialSol=data.generateRandomSol()
     inicialSol.printVideosinCaches()
     pert=inicialSol.perturbate()
