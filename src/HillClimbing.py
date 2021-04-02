@@ -39,3 +39,25 @@ def hillClimbing(data):
     
 #hillClimbing()
 #print("end function")
+
+#melhor numero de iterações para small: 20
+def hillClim(data):
+  currentSol=data.generateRandomSol()
+  count = 0
+  while True:
+    if count >= 5:
+      print('ev:',data.evaluation(currentSol))
+      #currentSol.printVideosinCaches()
+      return currentSol
+    newSol = neighbourFunc(data, currentSol)
+    if data.evaluation(newSol) > data.evaluation(currentSol):
+      currentSol = newSol
+      count = 0
+    else:
+      count += 1
+
+data=readData("src/input/trending_today.in")
+t0=time.perf_counter()
+hillClim(data)
+t1=time.perf_counter()
+print(t1-t0)

@@ -266,7 +266,8 @@ def subVideo(data,sol):
                 randCache.takeVideo(randVideo)
                 randCache.addVideo(otherRandVideo)
                 break
-    newSol = sol
+    newSol = deepcopy(sol)
+    #newSol = sol
     newSol.subCache(randCache)
     return newSol
 
@@ -291,7 +292,8 @@ def swapVideos(data,sol):
             randCache2.addVideo(randVideo1)
             break
 
-    newSol = sol
+    newSol = deepcopy(sol)
+
     newSol.subCache(randCache1)
     newSol.subCache(randCache2)
     return newSol
