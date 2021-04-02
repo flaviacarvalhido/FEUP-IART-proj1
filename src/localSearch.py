@@ -8,7 +8,7 @@ def localSearch(data,startsol):
     done=False
     while done==False:
         bestViz=currentSol
-        neighb=data.neighbourhood(data,currentSol)
+        neighb=data.neighbourhood(currentSol)
 
         for n in neighb:
             if(data.evaluation(n)<data.evaluation(bestViz)):

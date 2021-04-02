@@ -167,10 +167,7 @@ def generatePop(popSize,data):
 
 
 
-def swapCachesContent(cache1,cache2):
-    vid1=(cache1.videos)
-    cache1.videos=(cache2.videos)
-    cache2.videos=(vid1)
+
 
 
 
