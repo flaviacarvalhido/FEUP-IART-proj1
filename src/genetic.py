@@ -196,6 +196,12 @@ def testMut():
     sol.printVideosinCaches()
     print('ev:',data.evaluation(sol))
   
+def testMut2():
+    data=readData('../src/input/me_at_the_zoo.in')
+    sol=data.generateRandomSol()
+    sol.printVideosinCaches()##should be 1850000
+    sol.mutate()
+    sol.printVideosinCaches()
 
 def testCross():
 
@@ -207,7 +213,7 @@ def testCross():
     
 
 # testCross()
-generationalGenetic(50,30,0.3)
-# testMut()
+# generationalGenetic(50,30,0.3)
+testMut2()
 # testEval()
 # steadyStateGenetic(70,40,0.5,0.8)

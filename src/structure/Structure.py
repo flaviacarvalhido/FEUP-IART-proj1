@@ -36,9 +36,9 @@ class CacheServer:
     
     def takeVideo(self, video):
         if self.checkVideo(video):
-            for v in self.videos:
-                if self.v.id == video.id:
-                    self.videos.remove(v)
+            for vid in self.videos:
+                if vid.id == video.id:
+                    self.videos.remove(vid)
                     return True
         return False
 
@@ -83,7 +83,10 @@ class Solution:
             self.caches.append(CacheServer(size,i))
 
     def __eq__(self, x):
-        return self.convertToMatrix==x.convertToMatrix
+        return self.convertToMatrix()==x.convertToMatrix()
+
+    def __hash__(self):
+        return hash(frozenset(self.caches))
 
     def mutate(self):
         randC1=random.randrange(len(self.caches))
@@ -92,6 +95,16 @@ class Solution:
         c2=self.caches[randC2]
         self.caches[randC1].videos=c2.videos
         self.caches[randC2].videos=c1.videos
+
+    def perturbate(self):
+        sol=deepcopy(self)
+        randC1=random.randrange(len(sol.caches))
+        randC2=random.randrange(len(sol.caches))
+        c1=sol.caches[randC1]
+        c2=sol.caches[randC2]
+        sol.caches[randC1].videos=c2.videos
+        sol.caches[randC2].videos=c1.videos
+        return sol
 
     def printVideosinCaches(self):
     #print(self)
@@ -109,7 +122,8 @@ class Solution:
         nVideos = len(randCache.videos)
         if nVideos == 0:
             return nVideos, randCache.id
-        randVideo = random.sample(randCache.videos,1)
+        tempList = list(randCache.videos)
+        randVideo = tempList[random.randrange(nVideos)]
         return randVideo, randCacheid
     
     def subCache(self, newCache):
@@ -175,7 +189,7 @@ class Data:
         for cacheId in request.endpoint.dic.keys():
             cache=sol.caches[cacheId]
             if cache.checkVideo(request.video):
-                tenp=request.endpoint.dic[cache.id]
+                tenp=request.endpoint.dic[cacheId]
                 if time> tenp : 
                     time = tenp     # searches for lower streaming time for each request
             else:
@@ -198,7 +212,7 @@ class Data:
         return t
     
 
-    def neighbourhoodsize(self):
+    def neighbourhoodSize(self):
         if self.numCaches>100:
             return int(self.numCaches*0.4)
         elif self.numCaches>50:
@@ -209,12 +223,12 @@ class Data:
 
 
     def neighbourhood(self,sol):
-        numNeighbours=self.neighbourhoodsize()
-        neighb=set()
+        numNeighbours=self.neighbourhoodSize()
+        neighbourhood=[]
         for i in range(numNeighbours):
-            neighb.add(neighbourFunc(self,sol))
+            neighbourhood.append(neighbourFunc(self,sol))
         
-        return list(neighbourhood)
+        return list(set(neighbourhood))
 
     #generates a random solution with caches full of random videos
     def generateRandomSol(self):
@@ -233,7 +247,7 @@ def subVideo(data,sol):
     count = 0
     while True:
         (randVideo, randCacheid) = sol.getRandomVideoFromCache()
-        print(randVideo)
+
         count += 1
         if count>=30:
             newSol = data.generateRandomSol()
@@ -260,7 +274,7 @@ def swapVideos(data,sol):
     while True:
         (randVideo1, randCacheid1) = sol.getRandomVideoFromCache()
         (randVideo2, randCacheid2) = sol.getRandomVideoFromCache()
-        print(randVideo1)
+       
         count += 1
         if count == 30:
             newSol = data.generateRandomSol()
@@ -268,7 +282,7 @@ def swapVideos(data,sol):
         if(randVideo1==0 or randVideo2==0): continue
         randCache1=sol.caches[randCacheid1]
         randCache2=sol.caches[randCacheid2]
-        print('vid',randVideo1)
+      
         if randVideo1.id != randVideo2.id and randCache1.id != randCache2.id and randCache1.canSwapVideos(randVideo1, randVideo2) and randCache2.canSwapVideos(randVideo2, randVideo1):
             randCache1.takeVideo(randVideo1)
             randCache2.takeVideo(randVideo2)
