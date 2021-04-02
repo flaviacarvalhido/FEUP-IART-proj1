@@ -72,9 +72,11 @@ def tabuSearchStatic(data, stoppingIterations):
     return bestSolution
 
 
-data=readData('src/input/videos_worth_spreading.in')
-result=tabuSearchStatic(data, 10)
-print(data.evaluation(result))
+# data=readData('src/input/small.in')
+# result=tabuSearchStatic(data, 10)
+# print(data.evaluation(result))
+
+
 
 
 
