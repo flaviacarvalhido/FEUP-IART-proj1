@@ -23,13 +23,13 @@ class CacheServer:
     def __init__(self, maxCapacity,id):
         self.id=id
         self.maxCapacity = maxCapacity
-        self.videos = set()
+        self.videos = []
         self.currentCapacity = 0
     
     def addVideo(self, video):
         temp = self.currentCapacity + video.size
         if temp <= self.maxCapacity and video not in self.videos:
-            self.videos.add(video)
+            self.videos.append(video)
             self.currentCapacity = temp
             return True
         return False
