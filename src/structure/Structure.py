@@ -23,13 +23,13 @@ class CacheServer:
     def __init__(self, maxCapacity,id):
         self.id=id
         self.maxCapacity = maxCapacity
-        self.videos = []
+        self.videos = set()
         self.currentCapacity = 0
     
     def addVideo(self, video):
         temp = self.currentCapacity + video.size
         if temp <= self.maxCapacity and video not in self.videos:
-            self.videos.append(video)
+            self.videos.add(video)
             self.currentCapacity = temp
             return True
         return False
@@ -95,6 +95,16 @@ class Solution:
         c2=self.caches[randC2]
         self.caches[randC1].videos=c2.videos
         self.caches[randC2].videos=c1.videos
+
+    def perturbate(self):
+        sol=deepcopy(self)
+        randC1=random.randrange(len(sol.caches))
+        randC2=random.randrange(len(sol.caches))
+        c1=sol.caches[randC1]
+        c2=sol.caches[randC2]
+        sol.caches[randC1].videos=c2.videos
+        sol.caches[randC2].videos=c1.videos
+        return sol
 
     def printVideosinCaches(self):
     #print(self)
@@ -230,29 +240,14 @@ class Data:
             
         return sol
 
-    #TODO not needed anymore
-    def mutate(self):
-        randC1=random.randrange(len(self.caches))
-        randC2=random.randrange(len(self.caches))
-        c1=(self.caches[randC1])
-        c2=(self.caches[randC2])
-        self.caches[randC1].videos=(c2.videos)
-        self.caches[randC2].videos=(c1.videos)
-
-    #TODO not needed anymore
-    def printVideosinCaches(self):
-        #print(self)
-        for c in self.caches:
-            a="Cache "+str(c.id)+": "
-            for v in c.videos:
-                a+=str(v.id)+", "
-            print(a)
+    
 
 
 def subVideo(data,sol):
     count = 0
     while True:
         (randVideo, randCacheid) = sol.getRandomVideoFromCache()
+
         count += 1
         if count>=30:
             newSol = data.generateRandomSol()
@@ -280,6 +275,7 @@ def swapVideos(data,sol):
     while True:
         (randVideo1, randCacheid1) = sol.getRandomVideoFromCache()
         (randVideo2, randCacheid2) = sol.getRandomVideoFromCache()
+       
         count += 1
         if count == 30:
             newSol = data.generateRandomSol()
@@ -287,7 +283,7 @@ def swapVideos(data,sol):
         if(randVideo1==0 or randVideo2==0): continue
         randCache1=sol.caches[randCacheid1]
         randCache2=sol.caches[randCacheid2]
-        
+      
         if randVideo1.id != randVideo2.id and randCache1.id != randCache2.id and randCache1.canSwapVideos(randVideo1, randVideo2) and randCache2.canSwapVideos(randVideo2, randVideo1):
             randCache1.takeVideo(randVideo1)
             randCache2.takeVideo(randVideo2)
@@ -306,6 +302,11 @@ def neighbourFunc(data,sol):
         return swapVideos(data,sol)
     else: return subVideo(data,sol)
 
+
+def swapCachesContent(cache1,cache2):
+    vid1=(cache1.videos)
+    cache1.videos=(cache2.videos)
+    cache2.videos=(vid1)
 
 
 

@@ -167,10 +167,7 @@ def generatePop(popSize,data):
 
 
 
-def swapCachesContent(cache1,cache2):
-    vid1=(cache1.videos)
-    cache1.videos=(cache2.videos)
-    cache2.videos=(vid1)
+
 
 
 
@@ -199,6 +196,12 @@ def testMut():
     sol.printVideosinCaches()
     print('ev:',data.evaluation(sol))
   
+def testMut2():
+    data=readData('../src/input/me_at_the_zoo.in')
+    sol=data.generateRandomSol()
+    sol.printVideosinCaches()##should be 1850000
+    sol.mutate()
+    sol.printVideosinCaches()
 
 def testCross():
 
@@ -210,7 +213,7 @@ def testCross():
     
 
 # testCross()
-generationalGenetic(50,30,0.3)
-# testMut()
+# generationalGenetic(50,30,0.3)
+testMut2()
 # testEval()
 # steadyStateGenetic(70,40,0.5,0.8)
