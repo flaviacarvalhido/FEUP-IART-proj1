@@ -91,17 +91,18 @@ class Solution:
     def mutate(self):
         randC1=random.randrange(len(self.caches))
         randC2=random.randrange(len(self.caches))
-        c1=self.caches[randC1]
-        c2=self.caches[randC2]
+        c1=copy(self.caches[randC1])
+        c2=copy(self.caches[randC2])
+        
         self.caches[randC1].videos=c2.videos
         self.caches[randC2].videos=c1.videos
 
     def perturbate(self):
-        sol=deepcopy(self)
+        sol=copy(self)
         randC1=random.randrange(len(sol.caches))
         randC2=random.randrange(len(sol.caches))
-        c1=sol.caches[randC1]
-        c2=sol.caches[randC2]
+        c1=copy(sol.caches[randC1])
+        c2=copy(sol.caches[randC2])
         sol.caches[randC1].videos=c2.videos
         sol.caches[randC2].videos=c1.videos
         return sol
@@ -208,7 +209,7 @@ class Data:
         # #print('inside eval', time)
         # print('end eval')
         t1=time.perf_counter()
-        print(t1-t0)
+        # print(t1-t0)
         return t
     
 
@@ -218,7 +219,7 @@ class Data:
         elif self.numCaches>50:
             return int(self.numCaches*0.6)
         else:
-            return int(self.numCaches*1.5)
+            return int(self.numCaches*3)
 
 
 
@@ -228,7 +229,7 @@ class Data:
         for i in range(numNeighbours):
             neighbourhood.append(neighbourFunc(self,sol))
         
-        return list(set(neighbourhood))
+        return neighbourhood
 
     #generates a random solution with caches full of random videos
     def generateRandomSol(self):
@@ -296,9 +297,10 @@ def swapVideos(data,sol):
     return newSol
 
 def neighbourFunc(data,sol):
+    nsol=deepcopy(sol)
     if random.randrange(2) == 0:
-        return swapVideos(data,sol)
-    else: return subVideo(data,sol)
+        return swapVideos(data,nsol)
+    else: return subVideo(data,nsol)
 
 
 def swapCachesContent(cache1,cache2):

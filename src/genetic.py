@@ -201,6 +201,7 @@ def testMut2():
     sol=data.generateRandomSol()
     sol.printVideosinCaches()##should be 1850000
     sol.mutate()
+    print('---')
     sol.printVideosinCaches()
 
 def testCross():

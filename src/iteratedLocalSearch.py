@@ -6,55 +6,69 @@ import random
 
 
 
-def ils(numIters,ILSiters,alpha,beta):
-    data=readData('../src/input/me_at_the_zoo.in')
+def ils(numIters):
+    data=readData('../src/input/videos_worth_spreading.in')
     
     inicialSol=data.generateRandomSol()
     currSol=localSearch(data,inicialSol)
-    print(currSol)
     currEv=data.evaluation(currSol)
 
-    for n in range(ILSiters):
+    for n in range(numIters):
         perturbationSol=currSol.perturbate()
-        perturbationSol.printVideosinCaches()
+        # perturbationSol.printVideosinCaches()
         newSol=localSearch(data,perturbationSol)
         newEv=data.evaluation(newSol)
+        print('newev',newEv)
         if( newEv> currEv):
             currSol=newSol
             currEv=newEv
-            break;
+            
+
+    print(data.evaluation(currSol))
 
 
 
 
-
-
-
-def localSearch(data,startsol):
-    currentSol=startsol
-    done=False
-    while done==False:
-        bestViz=currentSol
+def localSearch(data,currentSol):
+   
+ 
+    while True:
+        bestViz=deepcopy(currentSol)
+        bestVizEv=data.evaluation(bestViz)
+        currentSolEv=bestVizEv
         neighb=data.neighbourhood(currentSol)
-
+       
+        # bestViz.printVideosinCaches()
+       
         for n in neighb:
-            if(data.evaluation(n)>data.evaluation(bestViz)):
+            # n.printVideosinCaches()           
+            nEv=data.evaluation(n)
+           
+            if(nEv>bestVizEv):
+                bestVizEv=nEv
                 bestViz=n
-        if currentSol==bestViz:
-            done=True
+        if currentSolEv==bestVizEv:
+    
+            break
         else:
             currentSol=bestViz
+    
+
     return currentSol
+
+
 
 
 def testPerturbation():
 
-    data=readData('../src/input/me_at_the_zoo.in')
+    data=readData('../src/input/videos_worth_spreading.in')
     inicialSol=data.generateRandomSol()
     inicialSol.printVideosinCaches()
     pert=inicialSol.perturbate()
+    print('--------')
     pert.printVideosinCaches()
 
 
-testPerturbation()
-# ils(10,5,0,0.1)
+# testPerturbation()
+
+ils(30)
