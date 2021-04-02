@@ -11,21 +11,22 @@ def simulatedAnnealing(data):
   currentSol = initialSol
 
   while t > tMin:
-    print('new it')
+    #print('new it')
     for i in range(100):
+      currentEval = data.evaluation(currentSol)
       newSol = neighbourFunc(data,currentSol)
-      if data.evaluation(newSol) >= data.evaluation(currentSol):
+      newEval = data.evaluation(newSol)
+      if newEval >= currentEval:
         #print("better func")
         currentSol = newSol
       else:
-        var = -(data.evaluation(currentSol) - data.evaluation(newSol))/10000000000
-        print(data.evaluation(currentSol) - data.evaluation(newSol))
+        var = -(currentEval - newEval)/10000000000
+        #print(data.evaluation(currentSol) - data.evaluation(newSol))
         ap = math.pow(math.e, var/t)
         #print("AP VALUE:" + str(ap))
-        if ap > random.random():
-          print("VALUES:")
-          print(ap)
-          print(random.random())
+        rand = random.random()
+        if ap > rand:
+          print("VALUES: " + str(ap) + " "+  str(rand))
           currentSol = newSol
     t = t*alpha
   print("--------")
@@ -37,3 +38,8 @@ def simulatedAnnealing(data):
 
 #simulatedAnnealing()
 #print("end function")
+data=readData("src/input/small.in")
+t0=time.perf_counter()
+simulatedAnnealing(data)
+t1=time.perf_counter()
+print(t1-t0)
