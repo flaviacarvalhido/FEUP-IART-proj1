@@ -36,9 +36,9 @@ class CacheServer:
     
     def takeVideo(self, video):
         if self.checkVideo(video):
-            for i in range(len(self.videos)):
-                if self.videos[i].id == video.id:
-                    self.videos.remove(i)
+            for vid in self.videos:
+                if vid.id == video.id:
+                    self.videos.remove(vid)
                     return True
         return False
 
@@ -83,7 +83,10 @@ class Solution:
             self.caches.append(CacheServer(size,i))
 
     def __eq__(self, x):
-        return self.convertToMatrix==x.convertToMatrix
+        return self.convertToMatrix()==x.convertToMatrix()
+
+    def __hash__(self):
+        return hash(frozenset(self.caches))
 
     def mutate(self):
         randC1=random.randrange(len(self.caches))
@@ -109,7 +112,8 @@ class Solution:
         nVideos = len(randCache.videos)
         if nVideos == 0:
             return nVideos, randCache.id
-        randVideo = randCache.videos[random.randrange(nVideos)]
+        tempList = list(randCache.videos)
+        randVideo = tempList[random.randrange(nVideos)]
         return randVideo, randCacheid
     
     def subCache(self, newCache):
@@ -175,7 +179,7 @@ class Data:
         for cacheId in request.endpoint.dic.keys():
             cache=sol.caches[cacheId]
             if cache.checkVideo(request.video):
-                tenp=request.endpoint.dic[cache.id]
+                tenp=request.endpoint.dic[cacheId]
                 if time> tenp : 
                     time = tenp     # searches for lower streaming time for each request
             else:
@@ -198,7 +202,7 @@ class Data:
         return t
     
 
-    def neighbourhoodsize(self):
+    def neighbourhoodSize(self):
         if self.numCaches>100:
             return int(self.numCaches*0.4)
         elif self.numCaches>50:
@@ -210,11 +214,11 @@ class Data:
 
     def neighbourhood(self,sol):
         numNeighbours=self.neighbourhoodSize()
-        neighbourhood=set()
+        neighbourhood=[]
         for i in range(numNeighbours):
-            neighbourhood.add(neighbourFunc(self,sol))
+            neighbourhood.append(neighbourFunc(self,sol))
         
-        return list(neighbourhood)
+        return list(set(neighbourhood))
 
     #generates a random solution with caches full of random videos
     def generateRandomSol(self):
