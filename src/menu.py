@@ -1,7 +1,14 @@
 from HillClimbing import hillClim
 from SimulatedAnnealing import simulatedAnnealing
+from genetic import *
+from iteratedLocalSearch import *
+from GuidedLocalSearch import *
+from TabuSearch import *
+
+from structure.Structure import *
 from parserfunc import *
 
+#TODO: função para imprimir solução
 
 # first menu of the application
 def initialMenu():
@@ -103,7 +110,8 @@ def hillClimbingMenu(data):
   print()
   print("                HILL CLIMBING                   ")
   print()
-  hillClim(data)
+  sol, time = hillClim(data)
+  printSolution(data, sol, time)
   print("------------------------------------------------")
 
 # menu to run the simulated annealing algorithm
@@ -112,7 +120,8 @@ def simulatedAnnealingMenu(data):
   print()
   print("              SIMULATED ANNEALING               ")
   print()
-  simulatedAnnealing(data)
+  sol, time = simulatedAnnealing(data)
+  printSolution(data, sol, time)
   print("------------------------------------------------")
 
 #menu to run the genetic steady state algorithm
@@ -121,7 +130,8 @@ def geneticSteadyStateMenu(data):
   print()
   print("             GENETIC STEADY STATE               ")
   print()
-  #chamar função
+  sol, time = steadyStateGenetic(data,50,15,0.2,0.3)
+  printSolution(data, sol, time)
   print("------------------------------------------------")
 
 #menu to run the genetic generational algorithm
@@ -130,7 +140,8 @@ def geneticGenerationalMenu(data):
   print()
   print("             GENETIC GENERATIONAL               ")
   print()
-  #chamar função
+  sol, time = generationalGenetic(data, 50, 15, 0.3)
+  printSolution(data, sol, time)
   print("------------------------------------------------")
 
 #menu to run the iterative local search algorithm
@@ -139,7 +150,8 @@ def iterativeLocalSearchMenu(data):
   print()
   print("           ITERATIVE LOCAL SEARCH               ")
   print()
-  #chamar função
+  sol, time = ils(30, data)
+  printSolution(data, sol, time)
   print("------------------------------------------------")
 
 #menu to run the guided local search algorithm
@@ -148,7 +160,8 @@ def guidedLocalSearchMenu(data):
   print()
   print("             GUIDED LOCAL SEARCH                ")
   print()
-  #chamar função
+  sol, time = gls(data, 10, -1000)
+  printSolution(data, sol, time)
   print("------------------------------------------------")
 
 #menu to run the tabu search algorithm
@@ -157,7 +170,8 @@ def tabuSearchMenu(data):
   print()
   print("                  TABU SEARCH                   ")
   print()
-  #chamar função
+  sol, time = tabuSearchStatic(data,10)
+  printSolution(data, sol, time)
   print("------------------------------------------------")
 
 initialMenu()

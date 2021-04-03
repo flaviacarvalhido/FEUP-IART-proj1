@@ -5,6 +5,9 @@ import random
 
 # simulated annealing algorithm
 def simulatedAnnealing(data):
+
+  t0=time.perf_counter()
+
   initialSol=data.generateRandomSol()
   tMin = 0.0001
   alpha = 0.9
@@ -23,12 +26,11 @@ def simulatedAnnealing(data):
         ap = math.pow(math.e, var/t)
         rand = random.random()
         if ap > rand:
-          print("VALUES: " + str(ap) + " "+  str(rand))
           currentSol = newSol
     t = t*alpha
-  currentSol.printVideosinCaches()
-  print('ev:',data.evaluation(currentSol))
 
-  return currentSol
+  t1=time.perf_counter()
+
+  return currentSol, t1-t0
 
 

@@ -28,10 +28,10 @@ def ils(numIters,data):
             
 
     t1=time.perf_counter()
-    print('\nBest solution found was:', currEv)
-    currSol.printVideosinCaches()
-    print('\nTook', t1-t0, 's\n\n')
-    return currSol
+    # print('\nBest solution found was:', currEv)
+    # currSol.printVideosinCaches()
+    # print('\nTook', t1-t0, 's\n\n')
+    return currSol, t1-t0
 
 
 
@@ -63,7 +63,7 @@ def localSearch(data,currentSol):
 
 def testPerturbation():
 
-    data=readData('../src/input/vws_small.in')
+    data=readData('src/input/vws_small.in')
     inicialSol=data.generateRandomSol()
     inicialSol.printVideosinCaches()
     pert=inicialSol.perturbate()
@@ -73,4 +73,4 @@ def testPerturbation():
 
 # testPerturbation()
 
-ils(30,readData('../src/input/me_at_the_zoo.in'))
+# ils(30,readData('../src/input/me_at_the_zoo.in'))

@@ -2,6 +2,9 @@ from structure.Structure import *
 from parserfunc import *
 
 def tabuSearchStatic(data, stoppingIterations):
+
+    t0=time.perf_counter()
+
     sol=data.generateRandomSol()
 
     neighborhoodSize = data.neighbourhoodSize()
@@ -46,7 +49,9 @@ def tabuSearchStatic(data, stoppingIterations):
         if(counter == stoppingIterations):
             break
 
-    return bestSolution
+
+    t1=time.perf_counter()
+    return bestSolution, t1-t0
 
 
 # data=readData('src/input/small.in')

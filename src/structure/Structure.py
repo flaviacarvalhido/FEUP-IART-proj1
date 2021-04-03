@@ -331,5 +331,12 @@ def swapCachesContent(cache1,cache2):
     cache1.videos=(cache2.videos)
     cache2.videos=(vid1)
 
-
+# prints solution 
+def printSolution(data, sol, time):
+    print()
+    print("    -------------SOLUTION FOUND-------------    ")
+    sol.printVideosinCaches()
+    print("Evaluation Result: "+ str(data.evaluation(sol)))
+    print("Time taken: " + str(time) + " seconds")
+    
 

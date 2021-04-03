@@ -25,6 +25,8 @@ def glsUtility(data, sol, penaltyCaches, penaltyVideos, costCaches, costVideos):
 # TODO: local search where??
 def gls(data, stoppingIterations, penaltyFactor):
 
+    t0=time.perf_counter()
+
     currSolution=data.generateRandomSol()
     bestSolution=currSolution
 
@@ -37,6 +39,7 @@ def gls(data, stoppingIterations, penaltyFactor):
     currEval = data.evaluation(bestSolution)
     counter=0
     lastEval=0
+    iter=0
 
     while(1):                                                
 
@@ -60,9 +63,12 @@ def gls(data, stoppingIterations, penaltyFactor):
             else: 
                 penaltyVideos += 1
 
-        #stopping 
-        currEval = data.evaluation(bestSolution)
 
+        currEval = data.evaluation(bestSolution)
+        print("Iteration nº", iter, ": Best Solution ->", currEval)
+        iter +=1
+
+        #stopping 
         if(lastEval == currEval): 
             counter += 1  
         else: 
@@ -70,15 +76,16 @@ def gls(data, stoppingIterations, penaltyFactor):
             lastEval = currEval
 
         if(counter == stoppingIterations):
+            print("No evolution detected after", stoppingIterations, "iterations. Stopping")
             break
 
-
-    return bestSolution
+    t1=time.perf_counter()
+    return bestSolution, t1-t0
 
 
 # data = readData('src/input/small.in')
-data = readData('src/input/me_at_the_zoo.in')
-# data = readData('src/input/videos_worth_spreading.in')
+# data = readData('src/input/me_at_the_zoo.in')
+data = readData('src/input/videos_worth_spreading.in')
 # data = readData('src/input/trending_videos.in')
 # data = readData('src/input/kittens.in')
 
@@ -90,5 +97,5 @@ data = readData('src/input/me_at_the_zoo.in')
 # trending_today -> 
 # kittens -> 
 
-result=gls(data, 10, -1000)
-print(data.evaluation(result))
+# result=gls(data, 10, -1000)
+# print(data.evaluation(result))

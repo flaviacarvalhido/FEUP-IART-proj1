@@ -5,7 +5,7 @@ import random
 
 
 #genetic algorithm where each generation has a percentage of the previous generation individuals
-def steadyStateGenetic(data,popSize, numGens, survivorRate, mutationRate):
+def steadyStateGenetic(data, popSize, numGens, survivorRate, mutationRate):
  
     t0=time.perf_counter()
     survivorsSize = int(popSize*survivorRate)
@@ -52,10 +52,10 @@ def steadyStateGenetic(data,popSize, numGens, survivorRate, mutationRate):
             numGensWithoutImprovement+=1
 
     t1=time.perf_counter()
-    print('\nBest solution found was:', best)
-    bestSol.printVideosinCaches()
-    print('\nTook', t1-t0, 's\n\n')
-    return bestSol
+    # print('\nBest solution found was:', best)
+    # bestSol.printVideosinCaches()
+    # print('\nTook', t1-t0, 's\n\n')
+    return bestSol, t1-t0
 
 
 #genetic algorithm where each generation starts empty and is built with the children of the previous generation
@@ -104,10 +104,10 @@ def generationalGenetic(data,popSize, numGens, mutationRate):
     
     
     t1=time.perf_counter()
-    print('\nBest solution found was:', best)
-    bestSol.printVideosinCaches()
-    print('\nTook', t1-t0, 's\n\n')
-    return bestSol
+    # print('\nBest solution found was:', best)
+    # bestSol.printVideosinCaches()
+    # print('\nTook', t1-t0, 's\n\n')
+    return bestSol, t1-t0
 
 
 
@@ -178,7 +178,7 @@ def generatePop(popSize,data):
 
 
 def testEval():
-    data=readData('../src/input/small.in')
+    data=readData('src/input/small.in')
     sol=Solution(data.numCaches,data.sizeCaches)
     sol.caches[0].addVideo(data.videos[2])
     sol.caches[1].addVideo(data.videos[1])
@@ -190,7 +190,7 @@ def testEval():
 
 
 def testMut():
-    data=readData('../src/input/small.in')
+    data=readData('src/input/small.in')
     sol=Solution(data.numCaches,data.sizeCaches)
     sol.caches[0].addVideo(data.videos[2])
     sol.caches[1].addVideo(data.videos[1])
@@ -203,7 +203,7 @@ def testMut():
     print('ev:',data.evaluation(sol))
   
 def testMut2():
-    data=readData('../src/input/me_at_the_zoo.in')
+    data=readData('src/input/me_at_the_zoo.in')
     sol=data.generateRandomSol()
     sol.printVideosinCaches()##should be 1850000
     sol.mutate()
@@ -212,7 +212,7 @@ def testMut2():
 
 def testCross():
 
-    data=readData('../src/input/small.in')
+    data=readData('src/input/small.in')
     pop=generatePop(5,data)
     child=classicalCrossover(pop,data)
     child[1].printVideosinCaches()
@@ -223,4 +223,4 @@ def testCross():
 # generationalGenetic(readData('../src/input/me_at_the_zoo.in'),50,15,0.3)
 # testMut2()
 # testEval()
-steadyStateGenetic(readData('../src/input/me_at_the_zoo.in'),50,15,0.2,0.3)
+# steadyStateGenetic(readData('src/input/me_at_the_zoo.in'),50,15,0.2,0.3)
