@@ -1,6 +1,7 @@
 
 from structure.Structure import *
 
+# reads date from input file and transforms to data 
 def readData(filepath):
     with open(filepath, 'r') as file:
         # 1st line

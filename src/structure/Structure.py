@@ -12,13 +12,14 @@ from copy import *
 
 import time
 
+# class to represent videos
 class Video:
     def __init__(self, size, id):
         self.size = size
         self.id=id
 
     
-
+# class to represent caches
 class CacheServer: 
     def __init__(self, maxCapacity,id):
         self.id=id
@@ -26,6 +27,7 @@ class CacheServer:
         self.videos = set()
         self.currentCapacity = 0
     
+    # adds video to cache if it fits
     def addVideo(self, video):
         temp = self.currentCapacity + video.size
         if temp <= self.maxCapacity and video not in self.videos:
@@ -34,6 +36,7 @@ class CacheServer:
             return True
         return False
     
+    #takes out video from cache
     def takeVideo(self, video):
         if self.checkVideo(video):
             for vid in self.videos:
@@ -42,32 +45,30 @@ class CacheServer:
                     return True
         return False
 
-
-    
+    # checks if video is in cache
     def checkVideo(self,video):
         return video in self.videos
     
+    # checks if newVideo can replace oldVideo
     def canSwapVideos(self, oldVideo, newVideo):
         return self.currentCapacity + newVideo.size - oldVideo.size <= self.maxCapacity
 
-   
-
-
+#class to represent endpoints
 class Endpoint:
     def __init__(self, latency,id):
         self.id=id
         self.latency = latency
         self.dic = {}
     
+    #adds cache to endpoint
     def addCacheServer(self, cacheServer, latency):
         self.dic[cacheServer] = latency
 
+    #checks if cache is in endpoint
     def checkCache(self, cache):
         return cache in self.dic
 
-    
-
-
+#class to represent a request
 class Request:
     def __init__(self, video, endpoint,ammount, id):
         self.video = video
@@ -75,7 +76,7 @@ class Request:
         self.ammount = ammount
         self.id=id
 
-
+#class to represent a possible solution
 class Solution:
     def __init__(self, numCaches,size):
         self.caches=[]
@@ -107,6 +108,7 @@ class Solution:
         sol.caches[randC2].videos=c1.videos
         return sol
 
+    # prints videos that are allocated in caches
     def printVideosinCaches(self):
         print('Cache constituiton:\n')
         for c in self.caches:
@@ -127,6 +129,7 @@ class Solution:
         randVideo = tempList[random.randrange(nVideos)]
         return randVideo, randCacheid
     
+    #substitutes the old version of cache with the new one
     def subCache(self, newCache):
         for i in range(len(self.caches)):
             if self.caches[i].id == newCache.id:
@@ -135,7 +138,7 @@ class Solution:
                 return True
         return False
     
-
+    #converts solution to matrix
     def convertToMatrix(self):
         matrix=[]
         for c in self.caches:
@@ -222,7 +225,7 @@ class Data:
         
         return neighbourhood
 
-    #generates a random solution with caches full of random videos
+    # generates a random solution with caches full of random videos
     def generateRandomSol(self):
         sol=Solution(self.numCaches,self.sizeCaches)
         for c in sol.caches:
@@ -291,13 +294,14 @@ def swapVideos(data,sol):
     newSol.subCache(randCache2)
     return newSol
 
+# function that decides with neighbourhod function to use
 def neighbourFunc(data,sol):
     nsol=deepcopy(sol)
     if random.randrange(2) == 0:
         return swapVideos(data,nsol)
     else: return subVideo(data,nsol)
 
-
+# swaps videos from each cache
 def swapCachesContent(cache1,cache2):
     vid1=(cache1.videos)
     cache1.videos=(cache2.videos)
