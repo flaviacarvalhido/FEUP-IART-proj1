@@ -38,8 +38,9 @@ def simulatedAnnealing(data):
 
 #simulatedAnnealing()
 #print("end function")
-data=readData("src/input/small.in")
-t0=time.perf_counter()
-simulatedAnnealing(data)
-t1=time.perf_counter()
-print(t1-t0)
+
+#data=readData("src/input/small.in")
+#t0=time.perf_counter()
+#simulatedAnnealing(data)
+#t1=time.perf_counter()
+#print(t1-t0)

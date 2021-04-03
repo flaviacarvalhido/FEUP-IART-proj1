@@ -1,5 +1,5 @@
 import os
-from HillClimbing import hillClimbing
+from HillClimbing import hillClim
 from SimulatedAnnealing import simulatedAnnealing
 from parserfunc import *
 
@@ -107,7 +107,7 @@ def hillClimbingMenu(data):
   print()
   print("                HILL CLIMBING                   ")
   print()
-  hillClimbing(data)
+  hillClim(data)
   print("------------------------------------------------")
 
 
@@ -170,3 +170,4 @@ def tabuSearchMenu(data):
 initialMenu()
 file = fileOptions()
 algorithmOptions(file)
+

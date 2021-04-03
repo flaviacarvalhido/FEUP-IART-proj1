@@ -56,8 +56,8 @@ def hillClim(data):
     else:
       count += 1
 
-data=readData("src/input/trending_today.in")
-t0=time.perf_counter()
-hillClim(data)
-t1=time.perf_counter()
-print(t1-t0)
+#data=readData("src/input/trending_today.in")
+#t0=time.perf_counter()
+#hillClim(data)
+#t1=time.perf_counter()
+#print(t1-t0)
