@@ -43,7 +43,7 @@ def fileOptions():
       file = "src/input/me_at_the_zoo.in"
       break
     elif option == 3:
-      file = "src/input/videos_worth_spreading.in"
+      file = "src/input/vws_small.in"
       break
     elif option == 4: 
       file = "src/input/trending_today.in"
