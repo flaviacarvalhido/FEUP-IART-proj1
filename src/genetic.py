@@ -5,8 +5,8 @@ import random
 
 
 #genetic algorithm where each generation has a percentage of the previous generation individuals
-def steadyStateGenetic(popSize, numGens, survivorRate, mutationRate):
-    data=readData('../src/input/me_at_the_zoo.in')
+def steadyStateGenetic(data,popSize, numGens, survivorRate, mutationRate):
+ 
     t0=time.perf_counter()
     survivorsSize = int(popSize*survivorRate)
     percetageMutation = int(popSize*mutationRate)
@@ -23,44 +23,44 @@ def steadyStateGenetic(popSize, numGens, survivorRate, mutationRate):
         population.reverse()
 
         survivors = population[-survivorsSize:]
-        # for p in survivors:
-        #     print( p[0])
-        #     p[1].printVideosinCaches()
+       
         population=survivors
         while len(population) < popSize:
             child=classicalCrossover(survivors,data)
 
+            # mutate by a given rate  
             if random.randint(0, popSize) < mutationRate*popSize:
                 child[1].mutate()
                 child[0]=data.evaluation(child[1])
-                # print('insidemut')
+              
             population.append(child)
-        # print('outside while')
+        
         population=sorted(population, key=lambda x: (x[0]))
         population.reverse();
-        # for p in population:
-        #     print( p[0])
-        #     p[1].printVideosinCaches()
+        
         bestofGen=population[0][0]
+        solofGen=population[0][1]
         print('Generation',iter,': best solution was',best)
         iter+=1        
       
        
         if bestofGen>best: 
             best=bestofGen
+            bestSol=solofGen
            
         elif(bestofGen<=best): 
             numGensWithoutImprovement+=1
 
     t1=time.perf_counter()
     print('\nBest solution found was:', best)
-    print('Took', t1-t0, 's')
-
+    bestSol.printVideosinCaches()
+    print('\nTook', t1-t0, 's\n\n')
+    return bestSol
 
 
 #genetic algorithm where each generation starts empty and is built with the children of the previous generation
-def generationalGenetic(popSize, numGens, mutationRate):
-    data=readData('../src/input/me_at_the_zoo.in')
+def generationalGenetic(data,popSize, numGens, mutationRate):
+  
     t0=time.perf_counter()
     percetageMutation = int(popSize*mutationRate)
     population=generatePop(popSize,data)
@@ -76,9 +76,7 @@ def generationalGenetic(popSize, numGens, mutationRate):
         population = sorted(population, key=lambda x: (x[0]))
         population.reverse()
         
-        # for p in population:
-        #     print( p[0])
-        #     p[1].printVideosinCaches()
+     
         while len(nextGen) < popSize:
             child=classicalCrossover(population,data)
            
@@ -91,16 +89,15 @@ def generationalGenetic(popSize, numGens, mutationRate):
         
         population=sorted(nextGen, key=lambda x: (x[0]))
         population.reverse();
-        # for p in population:
-        #     print( p[0])
-        #     p[1].printVideosinCaches()
+      
         bestofGen=population[0][0]
+        solofGen=population[0][1]
         print('Generation',iter,': best solution was',best)
         iter+=1      
        
         if bestofGen>best: 
             best=bestofGen
-           
+            bestSol=solofGen
         elif(bestofGen<=best): 
             numGensWithoutImprovement+=1
             
@@ -108,7 +105,9 @@ def generationalGenetic(popSize, numGens, mutationRate):
     
     t1=time.perf_counter()
     print('\nBest solution found was:', best)
-    print('Took', t1-t0, 's')
+    bestSol.printVideosinCaches()
+    print('\nTook', t1-t0, 's\n\n')
+    return bestSol
 
 
 
@@ -221,7 +220,7 @@ def testCross():
     
 
 # testCross()
-generationalGenetic(50,30,0.3)
+# generationalGenetic(readData('../src/input/me_at_the_zoo.in'),50,15,0.3)
 # testMut2()
 # testEval()
-steadyStateGenetic(50,30,0.2,0.3)
+steadyStateGenetic(readData('../src/input/me_at_the_zoo.in'),50,15,0.2,0.3)

@@ -108,7 +108,7 @@ class Solution:
         return sol
 
     def printVideosinCaches(self):
-    #print(self)
+        print('Cache constituiton:\n')
         for c in self.caches:
             a="Cache "+str(c.id)+": "
             for v in c.videos:

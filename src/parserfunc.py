@@ -40,5 +40,4 @@ def readData(filepath):
            
 
         data=Data(videos,numCache,sizeCache, endpoints,requests)
-        print("done parse")
         return data

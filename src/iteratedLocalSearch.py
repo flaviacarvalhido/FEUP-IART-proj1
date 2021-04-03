@@ -5,41 +5,45 @@ from copy import *
 import random
 
 
-
-def ils(numIters):
-    data=readData('../src/input/videos_worth_spreading.in')
+# iterated local search algorithm
+def ils(numIters,data):
     
+    t0=time.perf_counter()
+
+    #start with a random solution
     inicialSol=data.generateRandomSol()
     currSol=localSearch(data,inicialSol)
     currEv=data.evaluation(currSol)
 
+    # perturbate the best solution and search for better neighbours
     for n in range(numIters):
-        perturbationSol=currSol.perturbate()
-        # perturbationSol.printVideosinCaches()
+        perturbationSol=currSol.perturbate()     
         newSol=localSearch(data,perturbationSol)
         newEv=data.evaluation(newSol)
-        print('newev',newEv)
+        print('Iteration',n,': best solution was',newEv)
+    
         if( newEv> currEv):
             currSol=newSol
             currEv=newEv
             
 
-    print(data.evaluation(currSol))
+    t1=time.perf_counter()
+    print('\nBest solution found was:', currEv)
+    currSol.printVideosinCaches()
+    print('\nTook', t1-t0, 's\n\n')
+    return currSol
 
 
 
 
 def localSearch(data,currentSol):
    
- 
     while True:
         bestViz=deepcopy(currentSol)
         bestVizEv=data.evaluation(bestViz)
         currentSolEv=bestVizEv
         neighb=data.neighbourhood(currentSol)
-       
-        # bestViz.printVideosinCaches()
-       
+
         for n in neighb:
             # n.printVideosinCaches()           
             nEv=data.evaluation(n)
@@ -48,12 +52,10 @@ def localSearch(data,currentSol):
                 bestVizEv=nEv
                 bestViz=n
         if currentSolEv==bestVizEv:
-    
             break
         else:
             currentSol=bestViz
     
-
     return currentSol
 
 
@@ -71,4 +73,4 @@ def testPerturbation():
 
 # testPerturbation()
 
-ils(30)
+ils(30,readData('../src/input/me_at_the_zoo.in'))
