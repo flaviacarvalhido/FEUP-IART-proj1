@@ -147,6 +147,7 @@ class Solution:
 
 
 
+#class to store all the information of the problem
 class Data:
 
     def __init__(self, videos, numCaches,sizeCaches, endpoints, requests):
@@ -170,25 +171,17 @@ class Data:
             matrix.append(cacheLine)
         return matrix
 
+    # returns a random video
     def getRandomVideo(self):
         return self.videos[random.randrange(len(self.videos))]
 
     
-
+    # returns the saved time of each atended request
     def getSavedTime(self, request,sol):
         dataCenterTime=request.endpoint.latency
        
         time=dataCenterTime
-        
-        # for cache in sol.caches:
-        #     if cache.checkVideo(request.video) and request.endpoint.checkCache(cache.id):
-        #         tenp=request.endpoint.dic[cache.id]
-        #         if time> tenp : 
-        #             time = tenp     # searches for lower streaming time for each request
-        #     else:
-        #         continue
-
-
+    
         for cacheId in request.endpoint.dic.keys():
             cache=sol.caches[cacheId]
             if cache.checkVideo(request.video):
@@ -200,21 +193,17 @@ class Data:
 
         return (dataCenterTime-time)*request.ammount    # multiplies saved time by the ammount of times a video is requested
 
-
+    # evaluation function
     def evaluation(self,sol):
-        # print('begin eval')
+
         t0=time.perf_counter()
         t=sum([self.getSavedTime(r,sol) for r in self.requests])
-        # t=0
-        # for r in self.requests:
-        #     t+= self.getSavedTime(r,sol)
-        # #print('inside eval', time)
-        # print('end eval')
+
         t1=time.perf_counter()
         # print(t1-t0)
         return t
     
-
+    #aux function to calculate the size of the neighbourhood
     def neighbourhoodSize(self):
         if self.numCaches>100:
             return int(self.numCaches*0.4)
@@ -224,7 +213,7 @@ class Data:
             return int(self.numCaches*4)
 
 
-
+    # returns a list that contains a neighbourhood of given size 
     def neighbourhood(self,sol):
         numNeighbours=self.neighbourhoodSize()
         neighbourhood=[]
@@ -245,7 +234,7 @@ class Data:
 
     
 
-
+# one of our neighbouring functions: substitutes a video in a caches by anotehr one
 def subVideo(data,sol):
     count = 0
     while True:
@@ -273,6 +262,8 @@ def subVideo(data,sol):
     newSol.subCache(randCache)
     return newSol
 
+
+# one of our neighbouring functions: swaps 2 videos in different caches
 def swapVideos(data,sol):
     count = 0
     while True:

@@ -7,7 +7,6 @@ import random
 def localSearch(data,currentSol):
     done=False
 
-    
     while done==False:
         bestViz=(currentSol)
         bestVizEv=data.evaluation(bestViz)
