@@ -8,8 +8,6 @@ from TabuSearch import *
 from structure.Structure import *
 from parserfunc import *
 
-#TODO: função para imprimir solução
-
 # first menu of the application
 def initialMenu():
   print("------------------------------------------------")
@@ -57,10 +55,10 @@ def fileOptions():
       print("Invalid input: Try again!")
       continue
   print("------------------------------------------------")
-  return file
+  return file, option
 
 # menu to choose the algorithm to run
-def algorithmOptions(file):
+def algorithmOptions(file, fileSize):
   print("------------------------------------------------")
   print()
   print("Choose the algorithm: ")
@@ -78,25 +76,25 @@ def algorithmOptions(file):
     optionStr = input("Option: ")
     option = int(optionStr)
     if option == 1:
-      hillClimbingMenu(data)
+      hillClimbingMenu(data, fileSize)
       break
     elif option == 2:
       simulatedAnnealingMenu(data)
       break
     elif option == 3:
-      geneticSteadyStateMenu(data)
+      geneticSteadyStateMenu(data, fileSize)
       break
     elif option == 4: 
-      geneticGenerationalMenu(data)
+      geneticGenerationalMenu(data, fileSize)
       break
     elif option == 5: 
-      iterativeLocalSearchMenu(data)
+      iterativeLocalSearchMenu(data, fileSize)
       break
     elif option == 6:
-      guidedLocalSearchMenu(data)
+      guidedLocalSearchMenu(data, fileSize)
       break
     elif option == 7:
-      tabuSearchMenu(data)
+      tabuSearchMenu(data, fileSize)
       break
     else: 
       print("Invalid input: Try again!")
@@ -105,12 +103,16 @@ def algorithmOptions(file):
 
 
 # menu to run the hill climbing algorithm
-def hillClimbingMenu(data):
+def hillClimbingMenu(data, fileSize):
   print("------------------------------------------------")
   print()
   print("                HILL CLIMBING                   ")
   print()
-  sol, time = hillClim(data)
+  if fileSize == 1 or fileSize == 2:
+    iterations = 20
+  else:
+    iterations = 5
+  sol, time = hillClim(data, iterations)
   printSolution(data, sol, time)
   print("------------------------------------------------")
 
@@ -125,7 +127,7 @@ def simulatedAnnealingMenu(data):
   print("------------------------------------------------")
 
 #menu to run the genetic steady state algorithm
-def geneticSteadyStateMenu(data):
+def geneticSteadyStateMenu(data, fileSize):
   print("------------------------------------------------")
   print()
   print("             GENETIC STEADY STATE               ")
@@ -135,7 +137,7 @@ def geneticSteadyStateMenu(data):
   print("------------------------------------------------")
 
 #menu to run the genetic generational algorithm
-def geneticGenerationalMenu(data):
+def geneticGenerationalMenu(data, fileSize):
   print("------------------------------------------------")
   print()
   print("             GENETIC GENERATIONAL               ")
@@ -145,7 +147,7 @@ def geneticGenerationalMenu(data):
   print("------------------------------------------------")
 
 #menu to run the iterative local search algorithm
-def iterativeLocalSearchMenu(data):
+def iterativeLocalSearchMenu(data, fileSize):
   print("------------------------------------------------")
   print()
   print("           ITERATIVE LOCAL SEARCH               ")
@@ -155,7 +157,7 @@ def iterativeLocalSearchMenu(data):
   print("------------------------------------------------")
 
 #menu to run the guided local search algorithm
-def guidedLocalSearchMenu(data):
+def guidedLocalSearchMenu(data, fileSize):
   print("------------------------------------------------")
   print()
   print("             GUIDED LOCAL SEARCH                ")
@@ -165,7 +167,7 @@ def guidedLocalSearchMenu(data):
   print("------------------------------------------------")
 
 #menu to run the tabu search algorithm
-def tabuSearchMenu(data):
+def tabuSearchMenu(data, fileSize):
   print("------------------------------------------------")
   print()
   print("                  TABU SEARCH                   ")
@@ -175,6 +177,6 @@ def tabuSearchMenu(data):
   print("------------------------------------------------")
 
 initialMenu()
-file = fileOptions()
-algorithmOptions(file)
+file, size = fileOptions()
+algorithmOptions(file, size)
 

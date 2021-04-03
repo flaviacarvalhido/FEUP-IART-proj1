@@ -47,7 +47,10 @@ class CacheServer:
 
     # checks if video is in cache
     def checkVideo(self,video):
-        return video in self.videos
+        for v in self.videos:
+            if(v.id == video.id):
+                return True
+        return False
     
     # checks if newVideo can replace oldVideo
     def canSwapVideos(self, oldVideo, newVideo):
@@ -99,7 +102,7 @@ class Solution:
         self.caches[randC2].videos=c1.videos
 
     def perturbate(self):
-        sol=copy(self)
+        sol=deepcopy(self)
         randC1=random.randrange(len(sol.caches))
         randC2=random.randrange(len(sol.caches))
         c1=copy(sol.caches[randC1])
@@ -284,8 +287,8 @@ def subVideo(data,sol):
                 randCache.takeVideo(randVideo)
                 randCache.addVideo(otherRandVideo)
                 break
+
     newSol = deepcopy(sol)
-    #newSol = sol
     newSol.subCache(randCache)
     return newSol
 
@@ -311,16 +314,16 @@ def swapVideos(data,sol):
             randCache1.addVideo(randVideo2)
             randCache2.addVideo(randVideo1)
             break
-
     newSol = deepcopy(sol)
-
     newSol.subCache(randCache1)
     newSol.subCache(randCache2)
+
     return newSol
 
 # function that decides with neighbourhod function to use
 def neighbourFunc(data,sol):
     nsol=deepcopy(sol)
+    
     if random.randrange(2) == 0:
         return swapVideos(data,nsol)
     else: return subVideo(data,nsol)

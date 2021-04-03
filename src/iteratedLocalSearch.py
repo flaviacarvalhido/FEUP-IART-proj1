@@ -17,16 +17,19 @@ def ils(numIters,data):
 
     # perturbate the best solution and search for better neighbours
     for n in range(numIters):
-        perturbationSol=currSol.perturbate()     
+        perturbationSol=currSol.perturbate()
         newSol=localSearch(data,perturbationSol)
         newEv=data.evaluation(newSol)
-        print('Iteration',n,': best solution was',newEv)
-    
+
         if( newEv> currEv):
             currSol=newSol
+            print(currSol)
             currEv=newEv
-            
 
+        print("Iteration nº", n, ": Best Solution ->", currEv)
+            
+    print("Iteration", numIters, "limit reached. Stopping")
+    print(currSol)
     t1=time.perf_counter()
     # print('\nBest solution found was:', currEv)
     # currSol.printVideosinCaches()
@@ -50,11 +53,11 @@ def localSearch(data,currentSol):
            
             if(nEv>bestVizEv):
                 bestVizEv=nEv
-                bestViz=n
+                bestViz=deepcopy(n)
         if currentSolEv==bestVizEv:
             break
         else:
-            currentSol=bestViz
+            currentSol=deepcopy(bestViz)
     
     return currentSol
 

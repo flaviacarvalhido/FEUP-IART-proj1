@@ -14,6 +14,8 @@ def simulatedAnnealing(data):
   t = 1
   currentSol = initialSol
 
+  iter=0
+
   while t > tMin:
     for i in range(100):
       currentEval = data.evaluation(currentSol)
@@ -28,6 +30,9 @@ def simulatedAnnealing(data):
         if ap > rand:
           currentSol = newSol
     t = t*alpha
+    print("Iteration nº", iter, ": Best Solution ->", data.evaluation(currentSol))
+    iter+=1
+
 
   t1=time.perf_counter()
 
