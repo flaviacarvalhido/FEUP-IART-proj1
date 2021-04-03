@@ -4,7 +4,7 @@ from parserfunc import *
 
 # penalized features: number of empty caches (penaltyCaches), number of requested videos that are not in caches (penaltyVideos)
 
-#define glsEvaluation: evualtuates solution and penalizes certain features if verified
+# define glsEvaluation: evualtuates solution and penalizes certain features if verified
 def glsEvaluation(data, sol, penaltyCaches, penaltyVideos, penaltyFactor):
     evaluation = data.evaluation(sol)
 
@@ -14,43 +14,45 @@ def glsEvaluation(data, sol, penaltyCaches, penaltyVideos, penaltyFactor):
 
     return evaluation
 
-#define glsUtility: calculates utility of feature in given solution
+# define glsUtility: calculates utility of feature in given solution
+
+
 def glsUtility(data, sol, penaltyCaches, penaltyVideos, costCaches, costVideos):
     utilityCaches = sol.emptyCaches() * (costCaches / (1 + penaltyCaches))
-    utilityVideos = sol.notCachedVideos(data) * (costVideos / (1 + penaltyVideos))
+    utilityVideos = sol.notCachedVideos(
+        data) * (costVideos / (1 + penaltyVideos))
 
     return utilityCaches, utilityVideos
 
 
-# TODO: local search where??
 def gls(data, stoppingIterations, penaltyFactor):
 
-    t0=time.perf_counter()
+    t0 = time.perf_counter()
 
-    currSolution=data.generateRandomSol()
-    bestSolution=currSolution
+    currSolution = data.generateRandomSol()
+    bestSolution = currSolution
 
-    penaltyCaches=0      
-    penaltyVideos=0
+    penaltyCaches = 0
+    penaltyVideos = 0
 
-    costCaches=1000  # TODO: define cost??
-    costVideos=500
+    costCaches = 1000
+    costVideos = 500
 
     currEval = data.evaluation(bestSolution)
-    counter=0
-    lastEval=0
-    iter=0
+    counter = 0
+    lastEval = 0
+    iter = 0
 
-    while(1):                                                
+    while(1):
 
-        #search for bestCandidate in neighbourhood according to glsEvaluation function
+        # search for bestCandidate in neighbourhood according to glsEvaluation function
         neighbourhood = data.neighbourhood(currSolution)
         bestCandidate = neighbourhood[0]
         for candidate in neighbourhood:
             if glsEvaluation(data, candidate, penaltyCaches, penaltyVideos, penaltyFactor) > glsEvaluation(data, bestCandidate, penaltyCaches, penaltyVideos, penaltyFactor):
                 bestCandidate = candidate
 
-        #select better solution
+        # select better solution
         if glsEvaluation(data, bestCandidate, penaltyCaches, penaltyVideos, penaltyFactor) > glsEvaluation(data, currSolution, penaltyCaches, penaltyVideos, penaltyFactor):
             currSolution = bestCandidate
             if data.evaluation(currSolution) > data.evaluation(bestSolution):
@@ -59,43 +61,33 @@ def gls(data, stoppingIterations, penaltyFactor):
             utilityCaches, utilityVideos = glsUtility(
                 data, currSolution, penaltyCaches, penaltyVideos, costCaches, costVideos)
             if(utilityCaches > utilityVideos):
-                penaltyCaches += 1          # TODO: incremento de 1 é suficiente com avaliações tão altas? compensamos no penalty factor?
-            else: 
+                penaltyCaches += 1
+            else:
                 penaltyVideos += 1
-
 
         currEval = data.evaluation(bestSolution)
         print("Iteration nº", iter, ": Best Solution ->", currEval)
-        iter +=1
+        iter += 1
 
-        #stopping 
-        if(lastEval == currEval): 
-            counter += 1  
-        else: 
+        # stopping
+        if(lastEval == currEval):
+            counter += 1
+        else:
             counter = 0
             lastEval = currEval
 
         if(counter == stoppingIterations):
-            print("No evolution detected after", stoppingIterations, "iterations. Stopping")
+            print("No evolution detected after",
+                  stoppingIterations, "iterations. Stopping")
             break
 
-    t1=time.perf_counter()
+    t1 = time.perf_counter()
     return bestSolution, t1-t0
 
 
-# data = readData('src/input/small.in')
-# data = readData('src/input/me_at_the_zoo.in')
-data = readData('src/input/videos_worth_spreading.in')
-# data = readData('src/input/trending_videos.in')
-# data = readData('src/input/kittens.in')
-
-
-#TODO: penaltyFactor tem de mudar de acordo com o dataset... mas como?
+# TODO: penaltyFactor tem de mudar de acordo com o dataset... mas como?
 # small -> -200
 # me_at_the_zoo -> -500 a -1000 ??
-# videos_worth_spreading -> 
-# trending_today -> 
-# kittens -> 
-
-# result=gls(data, 10, -1000)
-# print(data.evaluation(result))
+# videos_worth_spreading ->
+# trending_today ->
+# kittens ->

@@ -43,7 +43,8 @@ def fileOptions():
       file = "src/input/me_at_the_zoo.in"
       break
     elif option == 3:
-      file = "src/input/videos_worth_spreading.in"
+      # file = "src/input/videos_worth_spreading.in"
+      file = "src/input/vws_small.in"
       break
     elif option == 4: 
       file = "src/input/trending_today.in"
@@ -94,12 +95,11 @@ def algorithmOptions(file, fileSize):
       guidedLocalSearchMenu(data, fileSize)
       break
     elif option == 7:
-      tabuSearchMenu(data, fileSize)
+      tabuSearchMenu(data)
       break
     else: 
       print("Invalid input: Try again!")
       continue
-  #print("------------------------------------------------")
 
 
 # menu to run the hill climbing algorithm
@@ -167,7 +167,7 @@ def guidedLocalSearchMenu(data, fileSize):
   print("------------------------------------------------")
 
 #menu to run the tabu search algorithm
-def tabuSearchMenu(data, fileSize):
+def tabuSearchMenu(data):
   print("------------------------------------------------")
   print()
   print("                  TABU SEARCH                   ")

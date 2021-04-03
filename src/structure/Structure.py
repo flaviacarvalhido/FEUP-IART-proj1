@@ -47,10 +47,13 @@ class CacheServer:
 
     # checks if video is in cache
     def checkVideo(self,video):
-        for v in self.videos:
-            if(v.id == video.id):
-                return True
-        return False
+        ids=[v.id for v in self.videos]
+        # for v in self.videos:
+        #     if(v.id == video.id):
+        #         return True
+        # return False
+
+        return video.id in ids
     
     # checks if newVideo can replace oldVideo
     def canSwapVideos(self, oldVideo, newVideo):
@@ -230,7 +233,7 @@ class Data:
         t=sum([self.getSavedTime(r,sol) for r in self.requests])
 
         t1=time.perf_counter()
-        # print(t1-t0)
+        print(t1-t0)
         return t
     
     #aux function to calculate the size of the neighbourhood
