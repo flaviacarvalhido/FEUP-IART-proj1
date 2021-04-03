@@ -1,13 +1,9 @@
-import os
-from HillClimbing import hillClimbing
+from HillClimbing import hillClim
 from SimulatedAnnealing import simulatedAnnealing
 from parserfunc import *
 
-#def clearScreen():
-  #os.system('cls')
-  #for i in range(20):
-    #print()
 
+# first menu of the application
 def initialMenu():
   print("------------------------------------------------")
   print()
@@ -19,9 +15,9 @@ def initialMenu():
   print()
   print("------------------------------------------------")
 
-
+# menu to choose the file to get the input
+# it's ordered by file size
 def fileOptions():
-  #clearScreen()
   print("------------------------------------------------")
   print()
   print("Choose the input file: ")
@@ -56,8 +52,8 @@ def fileOptions():
   print("------------------------------------------------")
   return file
 
+# menu to choose the algorithm to run
 def algorithmOptions(file):
-  #clearScreen()
   print("------------------------------------------------")
   print()
   print("Choose the algorithm: ")
@@ -101,18 +97,17 @@ def algorithmOptions(file):
   #print("------------------------------------------------")
 
 
+# menu to run the hill climbing algorithm
 def hillClimbingMenu(data):
-  #clearScreen()
   print("------------------------------------------------")
   print()
   print("                HILL CLIMBING                   ")
   print()
-  hillClimbing(data)
+  hillClim(data)
   print("------------------------------------------------")
 
-
+# menu to run the simulated annealing algorithm
 def simulatedAnnealingMenu(data):
-  #clearScreen()
   print("------------------------------------------------")
   print()
   print("              SIMULATED ANNEALING               ")
@@ -120,9 +115,8 @@ def simulatedAnnealingMenu(data):
   simulatedAnnealing(data)
   print("------------------------------------------------")
 
-
+#menu to run the genetic steady state algorithm
 def geneticSteadyStateMenu(data):
-  #clearScreen()
   print("------------------------------------------------")
   print()
   print("             GENETIC STEADY STATE               ")
@@ -130,8 +124,8 @@ def geneticSteadyStateMenu(data):
   #chamar função
   print("------------------------------------------------")
 
+#menu to run the genetic generational algorithm
 def geneticGenerationalMenu(data):
-  #clearScreen()
   print("------------------------------------------------")
   print()
   print("             GENETIC GENERATIONAL               ")
@@ -139,8 +133,8 @@ def geneticGenerationalMenu(data):
   #chamar função
   print("------------------------------------------------")
 
+#menu to run the iterative local search algorithm
 def iterativeLocalSearchMenu(data):
-  #clearScreen()
   print("------------------------------------------------")
   print()
   print("           ITERATIVE LOCAL SEARCH               ")
@@ -148,9 +142,8 @@ def iterativeLocalSearchMenu(data):
   #chamar função
   print("------------------------------------------------")
 
-
+#menu to run the guided local search algorithm
 def guidedLocalSearchMenu(data):
-  #clearScreen()
   print("------------------------------------------------")
   print()
   print("             GUIDED LOCAL SEARCH                ")
@@ -158,8 +151,8 @@ def guidedLocalSearchMenu(data):
   #chamar função
   print("------------------------------------------------")
 
+#menu to run the tabu search algorithm
 def tabuSearchMenu(data):
-  #clearScreen()
   print("------------------------------------------------")
   print()
   print("                  TABU SEARCH                   ")
@@ -170,3 +163,4 @@ def tabuSearchMenu(data):
 initialMenu()
 file = fileOptions()
 algorithmOptions(file)
+
