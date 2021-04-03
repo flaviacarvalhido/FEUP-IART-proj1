@@ -144,6 +144,29 @@ class Solution:
             matrix.append(cacheLine)
         return matrix
 
+    def emptyCaches(self):
+        result=0
+        for c in self.caches:
+            if len(c.videos) == 0:
+                result+=1
+        
+        return (result != 0)
+
+    def notCachedVideos(self, data):
+        result=0
+        found=False
+        for r in data.requests:
+            for c in self.caches:
+                if r.video in c.videos:
+                    found=True
+                    break
+            
+            if found:
+                found=False
+            else: result+=1
+
+        return (result!=0)
+
 class Data:
 
     def __init__(self, videos, numCaches,sizeCaches, endpoints, requests):
@@ -228,7 +251,7 @@ class Data:
         for i in range(numNeighbours):
             neighbourhood.append(neighbourFunc(self,sol))
         
-        return list(set(neighbourhood))
+        return neighbourhood
 
     #generates a random solution with caches full of random videos
     def generateRandomSol(self):

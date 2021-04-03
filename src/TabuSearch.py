@@ -1,31 +1,6 @@
 from structure.Structure import *
 from parserfunc import *
 
-
-# sBest ← s0
-# bestCandidate ← s0
-# tabuList ← []
-# tabuList.push(s0)
-# while (not stoppingCondition())
-#     sNeighborhood ← getNeighbors(bestCandidate)
-#     bestCandidate ← sNeighborhood[0]
-#     for (sCandidate in sNeighborhood)
-#         if ( (not tabuList.contains(sCandidate)) and (fitness(sCandidate) > fitness(bestCandidate)) )
-#             bestCandidate ← sCandidate
-#         end
-#     end
-#     if (fitness(bestCandidate) > fitness(sBest))
-#         sBest ← bestCandidate
-#     end
-#     tabuList.push(bestCandidate)
-#     if (tabuList.size > maxTabuSize)
-#         tabuList.removeFirst()
-#     end
-# end
-# return sBest
-
-
-
 def tabuSearchStatic(data, stoppingIterations):
     sol=data.generateRandomSol()
 
@@ -41,27 +16,29 @@ def tabuSearchStatic(data, stoppingIterations):
     counter=0
     lastEval=0
 
-    # TODO: bestSolution.evaluation() -> variable
+    while(1):       
 
-    while(1):                                                
+        #search for bestCandidate in neighbourhood according to tabuList and evaluation function
         neighbourhood=data.neighbourhood(bestCandidate)
         bestCandidate = neighbourhood[0]
         for candidate in neighbourhood:
             if not candidate in tabuList and data.evaluation(candidate) > data.evaluation(bestCandidate):
                 bestCandidate = candidate
 
+        #select better solution
         if(data.evaluation(bestCandidate) > data.evaluation(bestSolution)):
             bestSolution = bestCandidate
 
+        # update TabuList
         tabuList.append(bestCandidate)
-        if(len(tabuList) > maxTabuSize):                    # n^1/2; n->neighbourhoodSize
+        if(len(tabuList) > maxTabuSize):                    # maxTabuSize -> n^1/2; n->neighbourhoodSize
             tabuList.pop(0)
         
+        # stopping
         currEval = data.evaluation(bestSolution)
 
         if(lastEval==currEval): 
             counter+=1  
-            print("Stopping "+ str(counter))
         else: 
             counter=0
             lastEval = currEval
@@ -80,7 +57,7 @@ def tabuSearchStatic(data, stoppingIterations):
 
 
 
-# def tabuSearchDynamic(data):
+# def tabuSearchReactive(data):
 #     sol=data.generateRandomSol()
 
 #     bestSolution = sol                                     # TODO: sol is a randomly generated initial Solution
