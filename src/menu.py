@@ -29,9 +29,10 @@ def fileOptions():
   print()
   print("1: Small")
   print("2: Me at the Zoo")
-  print("3: Videos Worth Spreading")
-  print("4: Trending Today")
-  print("5: Kittens")
+  print("3: VWS Small")
+  print("4: Videos Worth Spreading")
+  print("5: Trending Today")
+  print("6: Kittens")
   print()
   while True:
     optionStr = input("Option: ")
@@ -43,13 +44,15 @@ def fileOptions():
       file = "src/input/me_at_the_zoo.in"
       break
     elif option == 3:
-      # file = "src/input/videos_worth_spreading.in"
-      file = "src/input/vws_small.in"
+      file = "src/input/vws_verysmaller.in"
       break
-    elif option == 4: 
-      file = "src/input/trending_today.in"
+    elif option == 4:
+      file = "src/input/videos_worth_spreading.in"
       break
     elif option == 5: 
+      file = "src/input/trending_today.in"
+      break
+    elif option == 6: 
       file = "src/input/kittens.in"
       break
     else: 
