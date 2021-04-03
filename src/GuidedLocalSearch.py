@@ -4,7 +4,7 @@ from parserfunc import *
 
 # penalized features: number of empty caches (penaltyCaches), number of requested videos that are not in caches (penaltyVideos)
 
-#define glsEvaluation
+#define glsEvaluation: evualtuates solution and penalizes certain features if verified
 def glsEvaluation(data, sol, penaltyCaches, penaltyVideos, penaltyFactor):
     evaluation = data.evaluation(sol)
 
@@ -14,7 +14,7 @@ def glsEvaluation(data, sol, penaltyCaches, penaltyVideos, penaltyFactor):
 
     return evaluation
 
-#define glsUtility
+#define glsUtility: calculates utility of feature in given solution
 def glsUtility(data, sol, penaltyCaches, penaltyVideos, costCaches, costVideos):
     utilityCaches = sol.emptyCaches() * (costCaches / (1 + penaltyCaches))
     utilityVideos = sol.notCachedVideos(data) * (costVideos / (1 + penaltyVideos))
