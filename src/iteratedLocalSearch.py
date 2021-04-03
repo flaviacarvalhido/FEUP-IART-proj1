@@ -23,7 +23,6 @@ def ils(numIters,data):
 
         if( newEv> currEv):
             currSol=newSol
-            print(currSol)
             currEv=newEv
 
         print("Iteration nº", n, ": Best Solution ->", currEv)
