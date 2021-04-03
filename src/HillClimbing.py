@@ -1,8 +1,6 @@
 from structure.Structure import *
 from parserfunc import *
 
-
-#melhor numero de iterações para small: 20
 # hill climbing algorithm
 def hillClim(data, iterations):
 

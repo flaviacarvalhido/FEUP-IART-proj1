@@ -1,4 +1,3 @@
-
 from structure.Structure import *
 
 # reads date from input file and transforms to data 

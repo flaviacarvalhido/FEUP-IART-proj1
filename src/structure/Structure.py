@@ -228,12 +228,7 @@ class Data:
 
     # evaluation function
     def evaluation(self,sol):
-
-        t0=time.perf_counter()
         t=sum([self.getSavedTime(r,sol) for r in self.requests])
-
-        t1=time.perf_counter()
-        print(t1-t0)
         return t
     
     #aux function to calculate the size of the neighbourhood

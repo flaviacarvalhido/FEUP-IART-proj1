@@ -57,5 +57,3 @@ def tabuSearchStatic(data, stoppingIterations):
 
     t1=time.perf_counter()
     return bestSolution, t1-t0
-
-

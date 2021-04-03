@@ -8,9 +8,7 @@ from parserfunc import *
 def glsEvaluation(data, sol, penaltyCaches, penaltyVideos, penaltyFactor):
     evaluation = data.evaluation(sol)
 
-    evaluation += penaltyFactor * \
-        (sol.emptyCaches() * penaltyCaches +
-         sol.notCachedVideos(data) * penaltyVideos)
+    evaluation += penaltyFactor * (sol.emptyCaches() * penaltyCaches + sol.notCachedVideos(data) * penaltyVideos)
 
     return evaluation
 
@@ -83,11 +81,3 @@ def gls(data, stoppingIterations, penaltyFactor):
 
     t1 = time.perf_counter()
     return bestSolution, t1-t0
-
-
-# TODO: penaltyFactor tem de mudar de acordo com o dataset... mas como?
-# small -> -200
-# me_at_the_zoo -> -500 a -1000 ??
-# videos_worth_spreading ->
-# trending_today ->
-# kittens ->

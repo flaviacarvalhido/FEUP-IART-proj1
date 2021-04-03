@@ -92,7 +92,7 @@ def algorithmOptions(file, fileSize):
       iterativeLocalSearchMenu(data, fileSize)
       break
     elif option == 6:
-      guidedLocalSearchMenu(data, fileSize)
+      guidedLocalSearchMenu(data)
       break
     elif option == 7:
       tabuSearchMenu(data)
@@ -157,12 +157,12 @@ def iterativeLocalSearchMenu(data, fileSize):
   print("------------------------------------------------")
 
 #menu to run the guided local search algorithm
-def guidedLocalSearchMenu(data, fileSize):
+def guidedLocalSearchMenu(data):
   print("------------------------------------------------")
   print()
   print("             GUIDED LOCAL SEARCH                ")
   print()
-  sol, time = gls(data, 10, -1000)
+  sol, time = gls(data, 10, -500000)
   printSolution(data, sol, time)
   print("------------------------------------------------")
 
@@ -176,7 +176,8 @@ def tabuSearchMenu(data):
   printSolution(data, sol, time)
   print("------------------------------------------------")
 
+
+
 initialMenu()
 file, size = fileOptions()
 algorithmOptions(file, size)
-

@@ -53,9 +53,7 @@ def steadyStateGenetic(data, popSize, numGens, survivorRate, mutationRate):
     print("No evolution detected after",
           numGensWithoutImprovement, "generations. Stopping")
     t1 = time.perf_counter()
-    # print('\nBest solution found was:', best)
-    # bestSol.printVideosinCaches()
-    # print('\nTook', t1-t0, 's\n\n')
+    
     return bestSol, t1-t0
 
 
@@ -104,9 +102,6 @@ def generationalGenetic(data, popSize, numGens, mutationRate):
     print("No evolution detected after",
           numGensWithoutImprovement, "generations. Stopping")
     t1 = time.perf_counter()
-    # print('\nBest solution found was:', best)
-    # bestSol.printVideosinCaches()
-    # print('\nTook', t1-t0, 's\n\n')
     return bestSol, t1-t0
 
 
@@ -211,10 +206,3 @@ def testCross():
     child = classicalCrossover(pop, data)
     child[1].printVideosinCaches()
     print(child[0])
-
-
-# testCross()
-# generationalGenetic(readData('../src/input/me_at_the_zoo.in'),50,15,0.3)
-# testMut2()
-# testEval()
-# steadyStateGenetic(readData('src/input/me_at_the_zoo.in'),50,15,0.2,0.3)

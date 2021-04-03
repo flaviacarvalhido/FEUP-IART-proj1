@@ -36,6 +36,3 @@ def testLocalSearch():
     lc= localSearch(data, inicialSol)
     lc.printVideosinCaches()
     print(data.evaluation(lc))
-
-
-testLocalSearch()

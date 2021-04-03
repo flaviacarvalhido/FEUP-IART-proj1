@@ -23,17 +23,13 @@ def ils(numIters,data):
 
         if( newEv> currEv):
             currSol=newSol
-            print(currSol)
             currEv=newEv
 
         print("Iteration nº", n, ": Best Solution ->", currEv)
             
     print("Iteration", numIters, "limit reached. Stopping")
-    print(currSol)
     t1=time.perf_counter()
-    # print('\nBest solution found was:', currEv)
-    # currSol.printVideosinCaches()
-    # print('\nTook', t1-t0, 's\n\n')
+   
     return currSol, t1-t0
 
 
@@ -48,7 +44,6 @@ def localSearch(data,currentSol):
         neighb=data.neighbourhood(currentSol)
 
         for n in neighb:
-            # n.printVideosinCaches()           
             nEv=data.evaluation(n)
            
             if(nEv>bestVizEv):
@@ -62,8 +57,6 @@ def localSearch(data,currentSol):
     return currentSol
 
 
-
-
 def testPerturbation():
 
     data=readData('src/input/vws_small.in')
@@ -72,8 +65,3 @@ def testPerturbation():
     pert=inicialSol.perturbate()
     print('--------')
     pert.printVideosinCaches()
-
-
-# testPerturbation()
-
-# ils(30,readData('../src/input/me_at_the_zoo.in'))
